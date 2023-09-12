@@ -1,6 +1,6 @@
 # Hidden Inventory • Tugas 2 PBP
 
-Welcome to Hidden Inventory! • [🌐 Adaptable link](https://hidden-inventory.adaptable.app/)
+Welcome to Hidden Inventory! • [🌐 Visit our website!](https://hidden-inventory.adaptable.app/)
 
 ## Jawaban pertanyaan
 
@@ -16,7 +16,7 @@ Supaya app `main` bisa diakses dengan browser, saya *routing* di `urls.py` aplik
 
 > *Buatlah bagian yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara `urls.py`, `views.py`, `models.py`, dan berkas `html`*
   
-![Bagan *request* client-server di suatu Django project]()
+![Bagan *request* client-server di suatu Django project](/task-assets/tugas2_bagan.jpg)
 
 >*Jelaskan mengapa kita menggunakan virtual environment? Apakah kita tetap dapat membuat aplikasi web berbasis Django tanpa menggunakan virtual environment?*
 
