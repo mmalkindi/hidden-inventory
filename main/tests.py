@@ -14,6 +14,7 @@ class mainTest(TestCase):
 
     def test_assert_fields(self): # checking if context matches what is displayed
         response = Client().get('/')
+        self.assertEquals(response.context['app_name'], "Hidden Inventory")
         self.assertEquals(response.context['display_name'], "Muhammad Milian Alkindi")
         self.assertEquals(response.context['subject_class'], "A")
 
