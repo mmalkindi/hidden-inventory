@@ -12,7 +12,7 @@ Sebelum memulai app baru, sama menginisiasi repositori git dengan nama `hidden-i
 
 Pada file `models.py` di aplikasi `main`, saya membuat class `Item` dengan atribut `name`, `amount`, `description` serta atribut tambahan `price` dan `category`. Di dalam file `views.py`, saya membuat function `show_main()` yang akan mengembalikan sebuah template HTML beserta `context` yang berisi nama dan kelas saya, serta nama project. Kemudian saya membuat dan mengaplikasikan migrasi model dengan *command* `makemigrations` dan `migrate`.
 
-Supaya app `main` bisa diakses dengan browser, saya *routing* di `urls.py` aplikasi `main` pada path kosong supaya browser akan menampilkan fungsi dari `views.py` pada halaman utama website. Kemudian, saya membuat *test-case* yang akan memvalidasi apabila variable dari *context* yang ditampilkan di template sama dengan yang didefinisikan di `views.py`. Terakhir, saya menjalankan `add, commit, push` untuk menyimpan dan *sync* dengan git repo yang ada di GitHub.
+Supaya app `main` bisa diakses dengan browser, saya *routing* di `urls.py` aplikasi `main` pada path kosong supaya browser akan menampilkan fungsi dari `views.py` pada halaman utama website. Kemudian, saya membuat *test-case* yang akan memvalidasi apabila variable dari *context* yang ditampilkan di template sama dengan yang didefinisikan di `views.py`. Terakhir, saya menjalankan `add, commit, push` untuk menyimpan dan *sync* dengan git repo yang ada di [GitHub](https://github.com/mmalkindi/hidden-inventory).
 
 > *Buatlah bagian yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara `urls.py`, `views.py`, `models.py`, dan berkas `html`*
   
