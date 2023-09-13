@@ -2,7 +2,50 @@
 
 Welcome to Hidden Inventory! • [🌐 Website](./README.md)
 
-## Tugas 2: Jawaban pertanyaan ❔
+| Jump ke tugas |
+|:-:|
+| [Tugas 2](#tugas-2-implementasi-mvt-pada-django) |
+| [Tugas 3](#tugas-3-implementasi-form-dan-data-delivery) |
+
+## Tugas 3: Implementasi Form dan Data Delivery
+
+<details open>
+    <summary>Jawaban pertanyaan ❔</summary>
+
+> *Apa perbedaan antara form `POST` dan form `GET` dalam Django?*
+
+JAWABAN
+
+> *Apa perbedaan utama antara XML, JSON, dan HTML dalam konteks pengiriman data?*
+
+JAWABAN
+
+> *Mengapa JSON sering digunakan dalam pertukaran data antara aplikasi web modern?*
+
+JAWABAN
+
+> *Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).*
+
+JAWABAN
+
+### Postman screenshots 📸
+
+![Format HTML](/task-assets/tugas3_html.jpg)
+
+![Format XML](/task-assets/tugas3_xml.jpg)
+
+![Format XML by ID](/task-assets/tugas3_xmlId.jpg)
+
+![Format JSON](/task-assets/tugas3_json.jpg)
+
+![Format JSON by ID](/task-assets/tugas3_jsonId.jpg)
+
+</details>
+
+## Tugas 2: Implementasi MVT pada Django
+
+<details>
+  <summary>Jawaban pertanyaan ❔</summary>
 
 > *Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step?*
 
@@ -47,3 +90,6 @@ Walaupun nama `Model` dan `View` sama, tetapi peran mereka berbeda dengan yang M
 `Model`: Merepresentasikan model domain aplikasi, termasuk data model dan *validation logic*.
 `View`: Mendefinisikan struktur, layout, dan tampilan yang akan dilihat oleh Client.  
 `ViewModel`: Implementasi *properties* dan *commands* yang bisa digunakan oleh `View`.  
+</details>
+
+[Back to top](#hidden-inventory)
