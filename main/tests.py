@@ -15,5 +15,5 @@ class mainTest(TestCase):
     def test_assert_fields(self): # checking if context matches what is displayed
         response = Client().get('/')
         self.assertEquals(response.context['display_name'], "Muhammad Milian Alkindi")
-        self.assertEquals(response.context['unique_npm'], 2206081856)
+        self.assertEquals(response.context['subject_class'], "A")
 

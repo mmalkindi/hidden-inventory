@@ -5,7 +5,7 @@ from django.shortcuts import render
 def show_main(request):
     context = {
         'display_name': 'Muhammad Milian Alkindi',
-        'unique_npm': 2206081856,
+        'subject_class': 'A',
         'app_name': 'Hidden Inventory',
     }
 
