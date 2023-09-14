@@ -31,14 +31,19 @@ JAWABAN
 ### Postman screenshots 📸
 
 ![Format HTML](/task-assets/tugas3_html.jpg)
+*Format HTML*
 
 ![Format XML](/task-assets/tugas3_xml.jpg)
+*Format XML*
 
 ![Format XML by ID](/task-assets/tugas3_xmlId.jpg)
+*Format XML dengan id*
 
 ![Format JSON](/task-assets/tugas3_json.jpg)
+*Format JSON*
 
 ![Format JSON by ID](/task-assets/tugas3_jsonId.jpg)
+*Format JSON dengan id*
 
 </details>
 
@@ -53,7 +58,7 @@ Pertama, saya membuat direktori baru dengan nama project django saya, `hidden-in
 
 Sebelum memulai app baru, sama menginisiasi repositori git dengan nama `hidden-inventory`. Setelah itu, saya membuat app `main` dengan command `python manage.py startapp main`, dan kemudian mendaftarkannya di `settings.py` yang berada di direktori proyek. Saya membuat template html dasar untuk aplikasi `main` yang akan menampilkan nama project, nama saya, dan kelas saya.
 
-Pada file `models.py` di aplikasi `main`, saya membuat class `Item` dengan atribut `name`, `amount`, `description` serta atribut tambahan `price` dan `category`. Di dalam file `views.py`, saya membuat function `show_main()` yang akan mengembalikan sebuah template HTML beserta `context` yang berisi nama dan kelas saya, serta nama project. Kemudian saya membuat dan mengaplikasikan migrasi model dengan *command* `makemigrations` dan `migrate`.
+Pada file `models.py` di aplikasi `main`, saya membuat class `Item` dengan atribut `name`, `amount`, `description` serta atribut tambahan `price` dan `tags`. Di dalam file `views.py`, saya membuat function `show_main()` yang akan mengembalikan sebuah template HTML beserta `context` yang berisi nama dan kelas saya, serta nama project. Kemudian saya membuat dan mengaplikasikan migrasi model dengan *command* `makemigrations` dan `migrate`.
 
 Supaya app `main` bisa diakses dengan browser, saya *routing* di `urls.py` aplikasi `main` pada path kosong supaya browser akan menampilkan fungsi dari `views.py` pada halaman utama website. Kemudian, saya membuat *test-case* yang akan memvalidasi apabila variable dari *context* yang ditampilkan di template sama dengan yang didefinisikan di `views.py`. Terakhir, saya menjalankan `add, commit, push` untuk menyimpan dan *sync* dengan git repo yang ada di [GitHub](https://github.com/mmalkindi/hidden-inventory).
 
