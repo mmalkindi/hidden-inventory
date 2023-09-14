@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        />
+        {% if page_title == nil %}
+            <title>Hidden Inventory</title>
+        {% else %}
+            <title>{{ page_title }} - Hidden Inventory</title>
+        {% endif %}
+
+        <style>
+            body {
+                font-family: sans-serif; 
+                padding: 10px;
+                padding-top: 0px;
+            }
+            table, th, td {
+                border: 1px solid black;
+                text-align: center;
+            }
+            th, td {
+                padding: 5px;
+            }
+        </style>
+
+        {% block meta %}
+        {% endblock meta %}
+    </head>
+
+    <body>
+        {% block content %}
+        {% endblock content %}
+    </body>
+</html>

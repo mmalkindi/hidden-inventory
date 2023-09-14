@@ -1,20 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main - Hidden Inventory</title>
+{% extends 'base.html' %}
+
+{% block meta %}
     <style>
-       body {
-        font-family: sans-serif; 
-       }    
+        .description {
+            font-size: 80%;
+            text-align: left;
+        }
+
     </style>
-</head>
-<body>
+{% endblock meta %}
+
+{% block content %}
     <h1>{{ app_name }}</h1>
 
     <p>Nama: {{ display_name }}</p>
     <p>Kelas: {{ subject_class }}</p>
 
-</body>
-</html>
+    <p>Registered items:</p>
+    <table class="item-table">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price ($)</th>
+            <th>Tags</th>
+            <th>Amount</th>
+            <th>Date Added</th>
+        </tr>
+        
+        {% for item in items %}
+            <tr>
+                <td>{{item.name}}</td>
+                <td class="description">{{item.description}}</td>
+                <td>{{item.price}}</td>
+                <td>{{item.tags}}</td>
+                <td>{{item.amount}}</td>
+                <td>{{item.date_added}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    <br />
+    
+    <a href="{% url 'main:create_item' %}">
+        <button>Register New</button>
+    </a>
+
+{% endblock content %}
