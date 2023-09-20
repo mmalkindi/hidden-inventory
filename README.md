@@ -20,8 +20,8 @@ Form dengan method `GET` akan menggabung data yang dikirim menjadi suatu *string
 
 > *Apa perbedaan utama antara XML, JSON, dan HTML dalam konteks pengiriman data?*
 
-`XML` menyimpan data dalam struktur *tag* (seperti HTML), namun memerlukan *tag* pembuka dan *tag* penutup. Isian dari data diapit oleh *tag*.
-`JSON` menyimpan data dalam bentuk key-value pair (object notation) dan merupakan turunan dari Javascript, namun bisa digunakan dengan bahasa pemrograman manapun.
+`XML` menyimpan data dalam struktur *tag* (seperti HTML), namun memerlukan *tag* pembuka dan *tag* penutup. Isian dari data diapit oleh *tag*.  
+`JSON` menyimpan data dalam bentuk key-value pair (object notation) dan merupakan turunan dari Javascript, namun bisa digunakan dengan bahasa pemrograman manapun.  
 `HTML` tidak didesain untuk mengirim data, melainkan menampilkan data ke user dalam bentuk yang lebih *user-friendly*. Tampilan situs HTML bisa diubah dengan CSS dan Javascript.
 
 > *Mengapa JSON sering digunakan dalam pertukaran data antara aplikasi web modern?*
@@ -30,7 +30,7 @@ Karena, JSON memiliki struktur data yang mudah untuk di*parse* oleh aplikasi web
 
 > *Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).*
 
-Pertama, saya membuat file `forms.py` untuk mendefinisikan field mana saja yang bisa diubah oleh user. Untuk web ini, user dapat mengisi field `name`, `amount`, `description`, `price`, dan `tags` suatu Item, dengan field `date_added` diisi secara otomatis. Kemudian di `view.py`, saya menambah beberapa import dan suatu fungsi baru untuk menambah data produk yang diisi ke dalam *database*. Fungsi `show_main()` juga saya modifikasi untuk memuat data semua objek `Item` supaya bisa ditampilkan di halaman utama.
+Pertama, saya membuat file `forms.py` untuk mendefinisikan field mana saja yang bisa diubah oleh user. Untuk web ini, user dapat mengisi field `name`, `amount`, `description`, `price`, dan `tags` suatu objek `Item`, dengan field `date_added` diisi secara otomatis. Kemudian di `views.py`, saya menambah beberapa import dan suatu fungsi baru untuk menambah data produk yang diisi ke dalam *database*. Fungsi `show_main()` juga saya modifikasi untuk memuat data semua objek `Item` supaya bisa ditampilkan di halaman utama.
 
 Kemudian, saya membuat template `create_item.html` sebagai halaman untuk mengisi dan mengirimkan form. Template halaman utama juga saya modifikasi untuk menampilkan data semua `Item` di database dalam bentuk *table*. Supaya halaman `create-item` bisa diakses, saya menambahkan pathnya ke `urls.py` serta link di halaman utama ke path tersebut.
 
@@ -39,6 +39,7 @@ Untuk menampilkan data dalam bentuk XML dan JSON, saya menambahkan fungsi `show_
 ### Postman screenshots 📸
 
 ![Format HTML](/task-assets/tugas3_html.jpg)
+*Format HTML*
 
 ![Format XML](/task-assets/tugas3_xml.jpg)
 *Format XML*
