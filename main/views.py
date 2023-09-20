@@ -25,7 +25,7 @@ def create_item(request):
         form.save()
         return HttpResponseRedirect(reverse('main:show_main'))
 
-    context = {'form': form, 'page_title': "Create Item"}
+    context = {'form': form, 'page_title': "Register Item"}
     return render(request, "create_item.html", context)
 
 def show_xml(request):
@@ -46,6 +46,3 @@ def show_json_by_id(request, id):
 
 def custom_404(request, exception):
     return render(request, '404.html', status=404, context={'page_title': 'Uh oh'})
-
-def custom_404(request, exception):
-    return render(request, '404.html', status=403, context={'page_title': 'Nuh uh'})
