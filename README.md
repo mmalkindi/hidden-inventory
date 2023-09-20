@@ -14,33 +14,40 @@ Welcome to Hidden Inventory! • [🌐 Website](./README.md)
 
 > *Apa perbedaan antara form `POST` dan form `GET` dalam Django?*
 
-JAWABAN
+Form yang menggunakan method `POST` akan mengirim ke server semua data yang di*submit* (setelah di*encode* terlebih dulu), dan kemudian menerima HTTPResponse dari server yang bersangkutan dengan form tersebut. Method ini sebaiknya digunakan untuk mengirim/meminta data yang sensitif dari *database* seperti detail *login* user.
+
+Form dengan method `GET` akan menggabung data yang dikirim menjadi suatu *string* dan digunakan untuk membuat (*compose*) suatu URL. Bisa juga dianggap data diinput melalui link. Method ini cocok untuk mengambil data yang tidak sensitif dari server, misalnya *search query* ketika sedang menggunakan fitur search, contoh: `https://www.youtube.com/results?search_query=django` dengan field dari form `search_query` yang bernilai `django`.
 
 > *Apa perbedaan utama antara XML, JSON, dan HTML dalam konteks pengiriman data?*
 
-JAWABAN
+`XML` menyimpan data dalam struktur *tag* (seperti HTML), namun memerlukan *tag* pembuka dan *tag* penutup. Isian dari data diapit oleh *tag*.
+`JSON` menyimpan data dalam bentuk key-value pair (object notation) dan merupakan turunan dari Javascript, namun bisa digunakan dengan bahasa pemrograman manapun.
+`HTML` tidak didesain untuk mengirim data, melainkan menampilkan data ke user dalam bentuk yang lebih *user-friendly*. Tampilan situs HTML bisa diubah dengan CSS dan Javascript.
 
 > *Mengapa JSON sering digunakan dalam pertukaran data antara aplikasi web modern?*
 
-JAWABAN
+Karena, JSON memiliki struktur data yang mudah untuk di*parse* oleh aplikasi web serta bersifat *lightweight* sehingga dapat dikirimkan dengan cepat dan murah.
 
 > *Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).*
 
-JAWABAN
+Pertama, saya membuat file `forms.py` untuk mendefinisikan field mana saja yang bisa diubah oleh user. Untuk web ini, user dapat mengisi field `name`, `amount`, `description`, `price`, dan `tags` suatu Item, dengan field `date_added` diisi secara otomatis. Kemudian di `view.py`, saya menambah beberapa import dan suatu fungsi baru untuk menambah data produk yang diisi ke dalam *database*. Fungsi `show_main()` juga saya modifikasi untuk memuat data semua objek `Item` supaya bisa ditampilkan di halaman utama.
+
+Kemudian, saya membuat template `create_item.html` sebagai halaman untuk mengisi dan mengirimkan form. Template halaman utama juga saya modifikasi untuk menampilkan data semua `Item` di database dalam bentuk *table*. Supaya halaman `create-item` bisa diakses, saya menambahkan pathnya ke `urls.py` serta link di halaman utama ke path tersebut.
+
+Untuk menampilkan data dalam bentuk XML dan JSON, saya menambahkan fungsi `show_xml()` dan `show_json()` di `views.py`. Untuk hanya menampilkan data objek `Item` dengan `pk` tertentu saya menambahkan fungsi `show_xml_by_id()` dan `show_json_by_id()` ke `views.py`, yang akan menggunakan `id` dari URL untuk mengambil data objek yang diinginkan. Supaya bisa diakses dengan URL, saya menambah *routing* di `urls.py` untuk masing-masing fungsi tersebut.
 
 ### Postman screenshots 📸
 
 ![Format HTML](/task-assets/tugas3_html.jpg)
-*Format HTML*
 
 ![Format XML](/task-assets/tugas3_xml.jpg)
 *Format XML*
 
-![Format XML by ID](/task-assets/tugas3_xmlId.jpg)
-*Format XML dengan id*
-
 ![Format JSON](/task-assets/tugas3_json.jpg)
 *Format JSON*
+
+![Format XML by ID](/task-assets/tugas3_xmlId.jpg)
+*Format XML dengan id*
 
 ![Format JSON by ID](/task-assets/tugas3_jsonId.jpg)
 *Format JSON dengan id*
@@ -97,4 +104,5 @@ Walaupun nama `Model` dan `View` sama, tetapi peran mereka berbeda dengan yang M
 `ViewModel`: Implementasi *properties* dan *commands* yang bisa digunakan oleh `View`.  
 </details>
 
-[Back to top](#hidden-inventory)
+---
+[↑ Back to top](#hidden-inventory)
