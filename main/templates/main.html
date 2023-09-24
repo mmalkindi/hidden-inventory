@@ -42,7 +42,12 @@
     <br />
     
     <a href="{% url 'main:create_item' %}">
-        <button>Register New</button>
+        <button type="button">Register New</button>
     </a>
+    <a href="{% url 'main:logout' %}">
+        <button type="button">Logout</button>
+    </a>
+    <br>
+    <p>Sesi terakhir login: {{ last_login }}</p><br>
 
 {% endblock content %}
