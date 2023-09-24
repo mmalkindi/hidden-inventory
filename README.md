@@ -3,13 +3,44 @@
 Welcome to Hidden Inventory! • [🌐 Website](./README.md)
 
 | Jump ke tugas |
-|:-:|
+| :-: |
 | [Tugas 2](#tugas-2-implementasi-mvt-pada-django) |
 | [Tugas 3](#tugas-3-implementasi-form-dan-data-delivery) |
+| [Tugas 4](#tugas-4-implementasi-autentikasi-session-dan-cookies) |
+
+## Tugas 4: Implementasi Autentikasi, Session, dan Cookies
+
+<details open>
+    <summary>Jawaban pertanyaan ❔</summary>
+
+> *Apa itu Django `UserCreationForm`, dan jelaskan apa kelebihan dan kekurangannya?*
+
+`UserCreationForm` adalah...
+Kelebihan: ...
+Kekurangan: ...
+
+> *Apa perbedaan antara autentikasi dan otorisasi dalam konteks Django, dan mengapa keduanya penting?*
+
+Autentikasi adalah...
+Otorisasi adalah...
+
+> *Apa itu cookies dalam konteks aplikasi web, dan bagaimana Django menggunakan cookies untuk mengelola data sesi pengguna?*
+
+`Cookies` adalah salah satu cara menyimpan data di web browser...
+
+> *Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai?*
+
+Third party cookies...
+
+> *Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).*
+
+First...
+
+</details>
 
 ## Tugas 3: Implementasi Form dan Data Delivery
 
-<details open>
+<details>
     <summary>Jawaban pertanyaan ❔</summary>
 
 > *Apa perbedaan antara form `POST` dan form `GET` dalam Django?*
