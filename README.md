@@ -15,31 +15,31 @@ Welcome to Hidden Inventory! • [🌐 Website](./README.md)
 
 > *Apa itu Django `UserCreationForm`, dan jelaskan apa kelebihan dan kekurangannya?*
 
-`UserCreationForm` adalah suatu `ModelForm` dalam framework Django yang dapat digunakan untuk membuat `user` baru. `UserCreationForm` menerima `username`, `password1`, dan `password2`, dengan `password1` dan `password2` dicek kesamaannya sebelum password divalidasi dan di*set* menjadi password miliki `user` yang baru dibuat. *Class* ini tidak memperbolehkan pembuatan akun baru dengan username yang sudah ada.
+`UserCreationForm` adalah suatu `ModelForm` dalam framework Django yang dapat digunakan untuk membuat `user` baru. `UserCreationForm` menerima `username`, `password1`, dan `password2`, dengan `password1` dan `password2` dicek kesamaannya sebelum password divalidasi dan di*set* menjadi milik `user` yang baru dibuat. *Class* ini tidak memperbolehkan pembuatan akun baru dengan username yang sudah ada.
 
-Kelebihan: Sangat mudah untuk meng-extend *class* ini untuk menambah `field` yang kita inginkan. Misal field `email`, `phone_number`.
+Kelebihan: Sangat mudah untuk meng-extend *class* ini untuk menambah `field` yang kita inginkan. Misal field `email`, `phone_number`.  
 Kekurangan: Kurang cocok apabila ingin membuat `user` baru tanpa menggunakan field `username` dan `password`, misalnya untuk pembuatan akun dengan service lainnya (Sign in with Google/Apple/etc).
 
 > *Apa perbedaan antara autentikasi dan otorisasi dalam konteks Django, dan mengapa keduanya penting?*
 
-Autentikasi adalah proses verifikasi siapa yang sedang menggunakan (login user/admin panel).
+Autentikasi adalah proses verifikasi siapa yang sedang menggunakan (login user/admin panel).  
 Otorisasi adalah proses verifikasi akses yang dimiliki pengguna (data permissions).
 
-Kedua hal tersebut penting dalam pembuatan web app yang melibatkan akun user. Kita perlu untuk mengautentikasi pengguna supaya kita tahu siapa yang sedang menggunakan aplikasi kita, bisa melalui `cookies` daan/atau `sessions`. Kita juga harus mengecek akses yang dimiliki pengguna (otorisasi) ketika dipanggil *request* get, add, set, remove, atau change data.
+Kedua hal tersebut penting dalam pembuatan web app yang melibatkan akun user. Kita perlu untuk mengautentikasi pengguna supaya kita tahu siapa yang sedang menggunakan aplikasi kita, bisa melalui `cookies` dan/atau `sessions`. Kita juga harus mengecek akses yang dimiliki pengguna (otorisasi) ketika dipanggil *request* get, add, set, remove, atau change data yang berhubungan dengar sistem.
 
 > *Apa itu cookies dalam konteks aplikasi web, dan bagaimana Django menggunakan cookies untuk mengelola data sesi pengguna?*
 
-`Cookies` adalah salah satu cara menyimpan data di web browser `client`, yang nanti dapat diakses kembali oleh aplikasi. Suatu `cookie` memiliki *expiration date*, dan akan dihapus otomatis setelaah melewati tanggal ekspirasinya. Django memberikan developer method-method untuk *fetch* dan *set* cookies yang bisa kita gunakan untuk web app, misalnya untuk menyimpan *login credentials*.
+`Cookies` adalah salah satu cara menyimpan data di web browser `client`, yang nanti dapat diakses kembali oleh aplikasi. Suatu `cookie` memiliki *expiration date*, dan akan dihapus otomatis setelah melewati tanggal ekspirasinya. Django memberikan developer method-method untuk *fetch* dan *set* cookies yang bisa kita gunakan untuk web app, misalnya untuk menyimpan *login credentials*.
 
 > *Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai?*
 
-Tidak. `Cookies` secara default akan menyimpan data dalam bentuk teks, sehingga perlu kita *encrypt* `cookie` tersebut supaya tidak bisa dilakukan dicuri data yang disimpan. `Cookie` juga bisa menjadi target dari serangan XSS (Cross Site Scripting) apabila data dari `cookie` digunakan untuk mengeksekusi kode. Penggunaan cookies juga harus mengikuti aturan-aturan privasi *online*, seperti memberikan popup ke user apabila `cookie` digunakan untuk *tracking*.
+**Tidak**. `Cookies` secara default akan menyimpan data dalam bentuk teks, sehingga perlu kita *encrypt* data sensitif untuk `cookie` tersebut supaya data tidak bisa dicuri oleh pihak ketiga. `Cookie` juga bisa menjadi target dari serangan XSS (Cross Site Scripting) apabila data dari `cookie` digunakan untuk mengeksekusi kode. Penggunaan cookies juga harus mengikuti aturan-aturan privasi *online*, seperti memberikan popup ke user apabila `cookie` digunakan untuk *tracking*.
 
 > *Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).*
 
-Pertama, saya membuat fungsi `register()`, `login()`, dan `logout()` di `views.py` dalam direktori `main`. Kemudian, saya membuat template `register.html` dan `login.html` untuk memfasilitasi `register()` dan `login()` user ke web app. Ketiga fungsi baru tersebut kemudian saya *routing* urlnya di `urls.py` aplikasi `main` supaya bisa diakses dan dijalankan. Fungsi `login` dan `logout` juga sudah menggunakan data dari `cookies` supaya *login credentials* user dapat disimpan dan/atau dihapus. Fungsi `show_main()` di `views.py` juga di*restrict* supaya hanya bisa diakses apabila ada *login credentials* yang tersimpan. File template `main.html` ditambahkan tombol `logout` supaya user bisa keluar log out dari aplikasi. Kemudian saya buat 2 akun lokal untuk mengecek apabila sistem register/login/logout bekerja dengan baik.
+Pertama, saya membuat fungsi `register()`, `login()`, dan `logout()` di `views.py` dalam direktori `main`. Kemudian, saya membuat template `register.html` dan `login.html` untuk memfasilitasi `register()` dan `login()` user ke web app. Ketiga fungsi baru tersebut kemudian saya *routing* urlnya di `urls.py` aplikasi `main` supaya bisa diakses dan dijalankan. Fungsi `login` dan `logout` juga sudah menggunakan data dari `cookies` supaya *login credentials* user dapat disimpan dan/atau dihapus. Fungsi `show_main()` di `views.py` juga di*restrict* supaya hanya bisa diakses apabila ada *login credentials* yang tersimpan. File template `main.html` ditambahkan tombol `logout` supaya user bisa log out dari aplikasi. Kemudian saya buat 2 akun lokal untuk mengecek apabila sistem register/login/logout bekerja dengan baik.
 
-Selanjutnya, saya modifikasi kelas `Item` di `models.py` untuk menambah field `user` yang akan menghubungkan suatu item dengan user menggunakan relationship one-to-one. Fungsi `create_item()` di `views.py` juga diubah untuk mengisi field `user` secara otomatis sebelum kemudian disimpan ke database. Model dimigrasi dengan semua `Item` yang sudah ada dianggap milik user dengan `id=1`. Saya juga mengubah `context` yang dikirimkan oleh `show_main()` di `views.py` untuk memuat username pengguna di field `display_name` dan data login terakhir di field `last_login`. Data tersebut akan ditampilkan di halaman utama web app setelah login.
+Selanjutnya, saya modifikasi kelas `Item` di `models.py` untuk menambah field `user` yang akan menghubungkan suatu item dengan user menggunakan *relationship* one-to-one. Fungsi `create_item()` di `views.py` juga diubah untuk mengisi field `user` secara otomatis sebelum kemudian disimpan ke database. Model dimigrasi dengan semua `Item` yang sudah ada dianggap milik user dengan `id=1`. Saya juga mengubah `context` yang dikirimkan oleh `show_main()` di `views.py` untuk memuat username pengguna di field `display_name` dan data login terakhir di field `last_login`. Data tersebut akan ditampilkan di halaman utama web app setelah login.
 
 </details>
 
