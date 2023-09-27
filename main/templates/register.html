@@ -1,15 +1,8 @@
 {% extends 'base.html' %}
 
-{% block meta %}
-    <title>Register</title>
-{% endblock meta %}
-
 {% block content %}  
-
 <div class = "login">
-    
     <h1>Register</h1>  
-
         <form method="POST" >  
             {% csrf_token %}  
             <table>  
@@ -24,11 +17,10 @@
     {% if messages %}  
         <ul>   
             {% for message in messages %}  
-                <li>{{ message }}</li>  
+                <li color="#e25028">{{ message }}</li>  
                 {% endfor %}  
         </ul>   
     {% endif %}
 
 </div>  
-
 {% endblock content %}

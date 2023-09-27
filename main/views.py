@@ -72,25 +72,25 @@ def create_item(request):
     context = {'form': form, 'page_title': "Register Item"}
     return render(request, "create_item.html", context)
 
-# def increment_item(request, id):
-#     item = Item.objects.filter(id=id)
-#     item.amount += 1
-#     item.save()
-#     return HttpResponseRedirect(reverse('main:show_main'))
+def increment_item(request, id):
+    item = Item.objects.get(id=id)
+    item.amount += 1
+    item.save()
+    return HttpResponseRedirect(reverse('main:show_main'))
 
-# def decrement_item(request, id):
-#     item = Item.objects.filter(id=id)
-#     item.amount -= 1
-#     if item.amount <= 0:
-#         item.delete()
-#     else:
-#         item.save()
-#     return HttpResponseRedirect(reverse('main:show_main'))
+def decrement_item(request, id):
+    item = Item.objects.get(id=id)
+    item.amount -= 1
+    if item.amount <= 0:
+        item.delete()
+    else:
+        item.save()
+    return HttpResponseRedirect(reverse('main:show_main'))
 
-# def delete_item(request, id):
-#     item = Item.objects.filter(id=id)
-#     item.delete()
-#     return HttpResponseRedirect(reverse('main:show_main'))
+def delete_item(request, id):
+    item = Item.objects.get(id=id)
+    item.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))
 
 
 # Data related
