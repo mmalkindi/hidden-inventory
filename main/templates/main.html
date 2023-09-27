@@ -25,6 +25,7 @@
             <th>Tags</th>
             <th>Amount</th>
             <th>Date Added</th>
+            <th colspan="3">Actions</th>
         </tr>
         
         {% for item in items %}
@@ -35,14 +36,34 @@
                 <td>{{item.tags}}</td>
                 <td>{{item.amount}}</td>
                 <td>{{item.date_added}}</td>
+                <td>
+                    <a href="{% url 'main:increment_item' id=item.id %}">
+                        <button type="button">+1</button>
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'main:decrement_item' id=item.id %}">
+                        <button type="button">-1</button>
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'main:delete_item' id=item.id %}">
+                        <button type="button">🗑️</button>
+                    </a>
+                </td>
             </tr>
         {% endfor %}
     </table>
     
-    <br />
+    <br/>
     
     <a href="{% url 'main:create_item' %}">
-        <button>Register New</button>
+        <button type="button">Register New</button>
     </a>
+    <a href="{% url 'main:logout' %}">
+        <button type="button">Logout</button>
+    </a>
+    <br>
+    <p>Sesi terakhir login: <samp>{{ last_login }}</samp></p><br>
 
 {% endblock content %}
