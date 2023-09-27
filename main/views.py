@@ -16,7 +16,7 @@ def show_main(request):
     items = Item.objects.filter(user=request.user)
 
     context = {
-        'display_name': 'Muhammad Milian Alkindi',
+        'display_name': request.user.username,
         'subject_class': 'A',
         'app_name': 'Hidden Inventory',
         'items': items,
@@ -35,7 +35,7 @@ def register(request):
             form.save()
             messages.success(request, 'Your account has been successfully created!')
             return redirect('main:login')
-    context = {'form':form}
+    context = {'form':form, 'page_title': "Register"}
     return render(request, 'register.html', context)
 
 def login_user(request):
@@ -50,7 +50,7 @@ def login_user(request):
             return response
         else:
             messages.info(request, 'Sorry, incorrect username or password. Please try again.')
-    context = {}
+    context = {'page_title': "Login"}
     return render(request, 'login.html', context)
 
 def logout_user(request):
@@ -72,6 +72,28 @@ def create_item(request):
     context = {'form': form, 'page_title': "Register Item"}
     return render(request, "create_item.html", context)
 
+# def increment_item(request, id):
+#     item = Item.objects.filter(id=id)
+#     item.amount += 1
+#     item.save()
+#     return HttpResponseRedirect(reverse('main:show_main'))
+
+# def decrement_item(request, id):
+#     item = Item.objects.filter(id=id)
+#     item.amount -= 1
+#     if item.amount <= 0:
+#         item.delete()
+#     else:
+#         item.save()
+#     return HttpResponseRedirect(reverse('main:show_main'))
+
+# def delete_item(request, id):
+#     item = Item.objects.filter(id=id)
+#     item.delete()
+#     return HttpResponseRedirect(reverse('main:show_main'))
+
+
+# Data related
 def show_xml(request):
     data = Item.objects.all()
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
