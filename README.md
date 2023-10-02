@@ -7,10 +7,50 @@ Welcome to Hidden Inventory! • [🌐 Website](./README.md)
 | [Tugas 2](#tugas-2-implementasi-mvt-pada-django) |
 | [Tugas 3](#tugas-3-implementasi-form-dan-data-delivery) |
 | [Tugas 4](#tugas-4-implementasi-autentikasi-session-dan-cookies) |
+| [Tugas 5](#tugas-5-desain-web-menggunakan-html-css-dan-framework-css) |
+
+## Tugas 5: Desain Web menggunakan HTML, CSS dan Framework CSS
+
+<details open>
+  <summary>Jawaban pertanyaan ❔</summary>
+
+> *Jelaskan manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya*
+
+*Element selector* dapat digunakan untuk mengubah style semua elemen yang disebut. Selector ini cocok digunakan di awal file CSS sebagai *default* styling untuk elemen tersebut, namun masih bisa distyle lebih spesifik dengan selector lainnya di baris-baris selanjutnya.
+
+ID selector akan meng*apply* *style* untuk suatu ID tertentu. Karena suatu ID hanya bisa digunakan untuk satu elemen dalam HTML, maka selector ini bisa digunakan untuk mengubah satu dan hanya satu elemen dengan ID tersebut.
+
+Class selector akan menerapkan *style* yang disebutkan untuk semua elemen yang memiliki *class* tersebut. ...
+
+Universal (*) selector...
+
+> *Jelaskan HTML5 Tag yang kamu ketahui.*
+
+1. `<div>`: Content Division element. Dengan `<div>`, kita bisa *grouping* elemen-elemen supaya lebih mudah untuk di*layout* dan di*style*.
+2. `<table>`: Table element. Elemen ini berfungsi sebagai *parent* elemen yang diperlukan oleh `<thead>`,  `<tbody>`, `<tfoot>`, `<th>`, `<tr>`, dan `<td>` untuk membuat suatu tabel.
+3. `<form>`: Form element. Elemen ini digunakan untuk membuat sebuah *form* dalam HTML. Ditambah dengan `<input>` dan `<button>`, isi form bisa diproses oleh server menggunakan `HTTPRequest`.
+4. `<a>`: Anchor tag. Dengan atribut `href`, elemen ini berfungsi sebagai *link* yang bisa diklik oleh *user* untuk berpindah halaman website atau berpindah posisi dalam halaman.
+
+> *Jelaskan perbedaan antara margin dan padding.*
+
+Padding adalah area di antara *border* suatu elemen dengan kontennya, sedangkan margin adalah area di luar *border* suatu elemen.  
+// TODO: gambar biar lebih jelas, maybe?
+
+> *Jelaskan perbedaan antara framework CSS Tailwind dan Bootstrap. Kapan sebaiknya kita menggunakan Bootstrap daripada Tailwind, dan sebaliknya?*
+
+`tailwind` dan `Bootstrap` memiliki *approach* yang berbeda untuk CSS. Dalam framework `tailwind`, developer menerapkan *style* untuk suatu elemen dengan menambahkan *class* yang bersangkutan dengan *style* yang ingin diterapkan, misalnya `...` untuk membuat teks suatu elemen berwarna merah, berukuran 12px, dan ... . Sementara itu, framework `Bootstrap` memberikan developer *class*-*class* yang sudah jadi dan langsung bisa dipakai, misalnya class `btn-primary` untuk memberikan style default pada `<button>`.
+
+`tailwind` sebaiknya digunakan apabila kita ingin *styling* elemen di HTML kita tanpa membuat nama-nama class di CSS...
+
+> *Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).*
+
+Firstly..
+
+</details>
 
 ## Tugas 4: Implementasi Autentikasi, Session, dan Cookies
 
-<details open>
+<details>
     <summary>Jawaban pertanyaan ❔</summary>
 
 > *Apa itu Django `UserCreationForm`, dan jelaskan apa kelebihan dan kekurangannya?*
