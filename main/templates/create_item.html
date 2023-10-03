@@ -3,17 +3,17 @@
 {% block content %}
 <h1>Register New Item</h1>
 
-<form method="POST">
-    {% csrf_token %}
-    <div class="table-responsive">
+<div class="create-table rounded bg-light bg-gradient border p-4 pb-1 shadow-sm overflow-scroll overflow-scroll">
+    <form method="POST">
+        {% csrf_token %}
         <table class="table table-borderless">
             <tbody>
                 {{ form.as_table }}
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="2">
-                        <input type="submit" class="btn btn-primary" value="Register Item"/>
+                    <td colspan="2" style="text-align: right;">
+                        <button type="submit" class="btn btn-primary">Register item</button>
                         <a href="{% url 'main:show_main' %}">
                             <button type="button" class="btn btn-outline-danger">Cancel</button>
                         </a>
@@ -21,7 +21,7 @@
                 </tr>
             </tfoot>
         </table>
-    </div>
-</form>
+    </form>
+</div>
 
 {% endblock %}

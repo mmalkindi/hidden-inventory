@@ -49,7 +49,7 @@ def login_user(request):
             response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
         else:
-            messages.info(request, 'Sorry, incorrect username or password. Please try again.')
+            messages.info(request, 'Incorrect username or password')
     context = {'page_title': "Login"}
     return render(request, 'login.html', context)
 
@@ -72,6 +72,22 @@ def create_item(request):
 
     context = {'form': form, 'page_title': "Register Item", 'display_name': request.user.username, 'subject_class': 'PBP A', 'last_login': request.COOKIES['last_login']}
     return render(request, "create_item.html", context)
+
+@login_required(login_url='/login')
+def edit_item(request, id):
+    # Get product berdasarkan ID
+    item = Item.objects.get(pk = id)
+
+    # Set product sebagai instance dari form
+    form = ItemForm(request.POST or None, instance=item)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_item.html", context)
 
 @login_required(login_url='/login')
 def increment_item(request, id):

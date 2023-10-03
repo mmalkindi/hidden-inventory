@@ -25,12 +25,19 @@
         <style>
             th {
                 text-align: center;
+                vertical-align: middle;
             }
-            .body {
+
+            .body, footer {
                 padding-top: 1rem;
                 padding-right: 2rem;
                 padding-bottom: 1rem;
                 padding-left: 2rem;
+            }
+
+            .create-table th {
+                text-align: right;
+                padding: -.2rem;
             }
 
             .body:has(.login) {
@@ -59,5 +66,7 @@
             {% block content %}
             {% endblock content %}
         </section>
+
+        {% include 'footer.html' %}
     </body>
 </html>
