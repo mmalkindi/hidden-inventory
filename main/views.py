@@ -17,7 +17,7 @@ def show_main(request):
 
     context = {
         'display_name': request.user.username,
-        'subject_class': 'A',
+        'subject_class': 'PBP A',
         'app_name': 'Hidden Inventory',
         'items': items,
         'last_login': request.COOKIES['last_login'],
@@ -60,6 +60,7 @@ def logout_user(request):
     return response
 
 # Item related
+@login_required(login_url='/login')
 def create_item(request):
     form = ItemForm(request.POST or None)
 
@@ -69,15 +70,17 @@ def create_item(request):
         item.save()
         return HttpResponseRedirect(reverse('main:show_main'))
 
-    context = {'form': form, 'page_title': "Register Item"}
+    context = {'form': form, 'page_title': "Register Item", 'display_name': request.user.username, 'subject_class': 'PBP A', 'last_login': request.COOKIES['last_login']}
     return render(request, "create_item.html", context)
 
+@login_required(login_url='/login')
 def increment_item(request, id):
     item = Item.objects.get(id=id)
     item.amount += 1
     item.save()
     return HttpResponseRedirect(reverse('main:show_main'))
 
+@login_required(login_url='/login')
 def decrement_item(request, id):
     item = Item.objects.get(id=id)
     item.amount -= 1
@@ -87,11 +90,11 @@ def decrement_item(request, id):
         item.save()
     return HttpResponseRedirect(reverse('main:show_main'))
 
+@login_required(login_url='/login')
 def delete_item(request, id):
     item = Item.objects.get(id=id)
     item.delete()
     return HttpResponseRedirect(reverse('main:show_main'))
-
 
 # Data related
 def show_xml(request):

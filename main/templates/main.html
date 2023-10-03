@@ -5,65 +5,67 @@
         .description {
             font-size: 80%;
             text-align: left;
+            overflow: hidden;
         }
-
     </style>
 {% endblock meta %}
 
 {% block content %}
-    <h1>{{ app_name }}</h1>
-
-    <p>Nama: {{ display_name }}</p>
-    <p>Kelas: {{ subject_class }}</p>
-
-    <p>Registered items: {{ items|length }}</p>
-    <table class="item-table">
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price ($)</th>
-            <th>Tags</th>
-            <th>Amount</th>
-            <th>Date Added</th>
-            <th colspan="3">Actions</th>
-        </tr>
+    <h1>
+        Current Inventory
+    </h1>
+    <p class="bd-lead">
+        Registered items: {{ items|length }}
+    </p>
+    <div class="table-responsive">
+        <table class="item-table table table-striped table-bordered table-responsive table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price ($)</th>
+                    <th scope="col">Tags</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Date Added</th>
+                    <th colspan="3" scope="col">Actions</th>
+                </tr>
+            </thead>
+            
+            <tbody class="table-group-divider">
+            {% for item in items %}
+                <tr>
+                    <td style="vertical-align: middle;">{{item.name}}</td>
+                    <td class="small">{{item.description}}</td>
+                    <td style="vertical-align: middle;">{{item.price}}</td>
+                    <td>{{item.tags}}</td>
+                    <td>{{item.amount}}</td>
+                    <td>{{item.date_added}}</td>
+                    <td>
+                        <a href="{% url 'main:increment_item' id=item.id %}">
+                            <button type="button" class="btn btn-outline-secondary">+</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'main:decrement_item' id=item.id %}">
+                            <button type="button" class="btn btn-outline-secondary">-</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'main:delete_item' id=item.id %}">
+                            <button type="button" class="btn btn-outline-danger">Delete</button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    
+    </div>
         
-        {% for item in items %}
-            <tr>
-                <td>{{item.name}}</td>
-                <td class="description">{{item.description}}</td>
-                <td>{{item.price}}</td>
-                <td>{{item.tags}}</td>
-                <td>{{item.amount}}</td>
-                <td>{{item.date_added}}</td>
-                <td>
-                    <a href="{% url 'main:increment_item' id=item.id %}">
-                        <button type="button">+1</button>
-                    </a>
-                </td>
-                <td>
-                    <a href="{% url 'main:decrement_item' id=item.id %}">
-                        <button type="button">-1</button>
-                    </a>
-                </td>
-                <td>
-                    <a href="{% url 'main:delete_item' id=item.id %}">
-                        <button type="button">🗑️</button>
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-    
-    <br/>
-    
-    <a href="{% url 'main:create_item' %}">
-        <button type="button">Register New</button>
+    <a href="{% url 'main:create_item' %}" class="btn-link">
+        <button type="button" class="btn btn-primary">Register New</button>
     </a>
-    <a href="{% url 'main:logout' %}">
-        <button type="button">Logout</button>
-    </a>
-    <br>
-    <p>Sesi terakhir login: <samp>{{ last_login }}</samp></p><br>
+    <hr>
+    <p class="small">Sesi terakhir login: <samp>{{ last_login }}</samp></p><br>
 
 {% endblock content %}

@@ -1,25 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class = "login">
-    <h1>Login</h1>
+<div class="login rounded bg-light bg-gradient border p-4 shadow-sm">
     <form method="POST" action="">
         {% csrf_token %}
-        <table>
-            <tr>
-                <td>Username: </td>
-                <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
-            </tr>
-                    
-            <tr>
-                <td>Password: </td>
-                <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
-            </tr>
-
-            <tr>
-                <td></td>
-                <td><input class="btn login_btn" type="submit" value="Login"></td>
-            </tr>
+        <table class="table table-borderless table-transparent">
+            <thead>
+                <tr>
+                    <th colspan="2" style="text-align: center;">
+                        Login
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Username: </td>
+                    <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+                </tr>
+                        
+                <tr>
+                    <td>Password: </td>
+                    <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <button type="submit" class="login_btn btn btn-block btn-primary">Login</button>
+                    </td>
+                </tr>
+            </tfoot>
         </table>
     </form>
 
@@ -31,7 +41,6 @@
         </ul>
     {% endif %}     
         
-    Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
-
+    Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>    
 </div>
 {% endblock content %}
