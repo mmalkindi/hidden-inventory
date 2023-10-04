@@ -80,7 +80,6 @@ def create_item(request):
     return render(request, "create_item.html", context)
 
 @login_required(login_url='/login')
-@csrf_exempt
 def add_item_ajax(request):
     form = ItemForm(request.POST or None)
     if form.is_valid() and request.method == 'POST':
