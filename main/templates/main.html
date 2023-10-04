@@ -14,7 +14,7 @@
     <h1>
         Current Inventory
     </h1>
-    <p class="bd-lead">
+    <p class="bd-lead" id="items_amount">
         Registered items: {{ items|length }}
     </p>
     {% if items|length != 0  %}
@@ -22,7 +22,7 @@
         <div class="card" aria-hidden="true">
             <div class="card-body">
               <h5 class="card-title placeholder-glow">
-                <span class="placeholder col-   6"></span>
+                <span class="placeholder col-6"></span>
               </h5>
               <p class="card-text placeholder-glow">
                 <span class="placeholder col-7"></span>
@@ -44,6 +44,7 @@
 
     <!-- MODAL -->
     {% include 'ajax_add_modal.html' %}
+    {% include 'ajax_delete_modal.html' %}
     
     <script>
         async function getItems() {
@@ -51,11 +52,12 @@
         }
 
         async function refreshItems() {
-            document.getElementById("item_table").innerHTML = ""
             const items = await getItems()
             console.log(items)
                 let htmlString = ``;
+                var counter = 0;
                 items.forEach((item) => {
+                    counter++;
                     var link_add_item = "{% url 'main:increment_item' id=12345 %}".replace(/12345/, item.pk.toString());
                     var link_reduce_item = "{% url 'main:decrement_item' id=12345 %}".replace(/12345/, item.pk.toString());
                     var link_edit_item = "{% url 'main:edit_item' id=12345 %}".replace(/12345/, item.pk.toString());
@@ -63,7 +65,7 @@
 
                     htmlString += 
                     `<div class="col">
-                        <div class="card h-100 shadow-sm">
+                        <div class="card h-100 shadow-sm" data-item-id=${item.pk}>
                             <div class="card-body">
                                 <h5 class="card-title text-center mb-2">${item.fields.name}</h5>
                                 <p class="card-text mb-3">${item.fields.description}</p>
@@ -97,8 +99,8 @@
                                     <a href="${link_edit_item}" class="link-btn">
                                         <button type="button" class="btn btn-outline-warning">Edit</button>
                                     </a>
-                                    <a href="${link_delete_item}" class="link-btn">
-                                        <button type="button" class="btn btn-outline-danger">Delete</button>
+                                    <a href="${link_delete_item}" class="link-btn" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                        <button type="button" class="btn btn-outline-danger delete-item-button">Delete</button>
                                     </a>
                                 </div>
                             </div>
@@ -106,6 +108,16 @@
                     </div>\n` 
             })
             document.getElementById("item_table").innerHTML = htmlString
+            document.getElementById("items_amount").innerText = `Registered items: ${counter}`
+
+            var deleteButtons = document.getElementsByClassName("delete-item-button")
+            for(var i = 0; i < deleteButtons.length; i++) {
+                (function(index) {
+                    deleteButtons[index].addEventListener("click", function() {
+                        setDeleteModalId(deleteButtons[index]);
+                    })
+                })(i);
+            }
         }
         refreshItems()
 
@@ -119,5 +131,27 @@
             return false
         }
         document.getElementById("button_add").onclick = addItem
+
+        function deleteItem(id) {
+            
+        }
+        document.getElementById("button_delete").onclick = function() {
+            const id = document.getElementById("deleteModal").dataset.itemId
+            console.log(id)
+            const delete_url = "{% url 'main:delete_item_ajax' id=12345 %}".replace(/12345/, id);
+            fetch(delete_url, {
+                method: "POST",
+                body: new FormData(document.querySelector('#delete-item-form'))
+            }).then(refreshItems)
+
+            document.getElementById("deleteModal").dataset.itemId = null
+            return false
+        }
+
+        function setDeleteModalId(button) {
+            const itemDeleteId = button.closest("div.card").dataset.itemId;
+            document.getElementById("deleteModal").dataset.itemId = itemDeleteId;
+        }
+                
     </script>
 {% endblock content %}

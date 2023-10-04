@@ -1,0 +1,18 @@
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="delete-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="delete-modal-label">Delete Item</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="deleteConfirmationText">
+                <p>Are you sure you want to delete <strong>this</strong> item?</p>
+                <form id="delete-item-form" onsubmit="return false;">{% csrf_token %}</form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="button_delete" data-bs-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Nevermind</button>
+            </div>
+        </div>
+    </div>
+</div>

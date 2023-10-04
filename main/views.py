@@ -33,6 +33,10 @@ def get_items_json(request):
     items = Item.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize('json', items))
 
+def get_an_item(request, id):
+    item = Item.objects.filter(user=request.user, pk=id)
+    return HttpResponse(serializers.serialize('json', item))
+
 ## User Accounts
 def register(request):
     if 'last_login' in request.COOKIES.keys():
@@ -136,8 +140,17 @@ def decrement_item(request, id):
 @login_required(login_url='/login')
 def delete_item(request, id):
     item = Item.objects.get(id=id)
-    item.delete()
+    if request.user == item.user:
+        item.delete()
     return HttpResponseRedirect(reverse('main:show_main'))
+
+@login_required(login_url='/login')
+def delete_item_ajax(request, id):
+    item = Item.objects.get(id=id)
+    if request.method == 'POST' and request.user == item.user:
+        item.delete()
+        return HttpResponse(b"CREATED", status=201)
+    return HttpResponseNotFound()
 
 # Data related
 def show_xml(request):
