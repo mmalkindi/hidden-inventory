@@ -20,9 +20,7 @@ Welcome to Hidden Inventory! • [🌐 Website](./README.md)
 
 ID selector akan meng*apply* *style* untuk suatu ID tertentu. Karena suatu ID hanya bisa digunakan untuk satu elemen dalam HTML, maka selector ini bisa digunakan untuk mengubah satu dan hanya satu elemen dengan ID tersebut.
 
-Class selector akan menerapkan *style* yang disebutkan untuk semua elemen yang memiliki *class* tersebut. ...
-
-Universal (*) selector...
+Class selector akan menerapkan *style* yang disebutkan untuk semua elemen yang memiliki *class* tersebut. ... Framework CSS seperti Bootstrap dan tailwind...
 
 > *Jelaskan HTML5 Tag yang kamu ketahui.*
 
