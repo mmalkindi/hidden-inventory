@@ -17,44 +17,48 @@
         Registered items: {{ items|length }}
     </p>
     {% if items|length != 0  %}
-    <div class="table-responsive main-table">
-        <table class="item-table table table-striped table-bordered">
-            <thead class="thead-light">
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Price ($)</th>
-                    <th scope="col">Tags</th>
-                    <th scope="col">Amount</th>
-                    <th scope="col">Date Added</th>
-                    <th colspan="3" scope="col">Actions</th>
-                </tr>
-            </thead>
-            
-            <tbody>
-            {% for item in items %}
-                <tr class="align-middle">
-                    <td>{{item.name}}</td>
-                    <td class="small description">{{item.description}}</td>
-                    <td style="text-align: center;">{{item.price}}</td>
-                    <td class="small">{{item.tags}}</td>
-                    <td>{{item.amount}}</td>
-                    <td class="text-secondary small">{{item.date_added}}</td>
-                    <td colspan="3">
-                        <div class="d-grid gap-2 d-md-flex justify-content-center mx-auto text-center">
-                            <a href="{% url 'main:edit_item' id=item.id %}" class="btn-link">
-                                <button type="button" class="btn btn-outline-secondary">Edit</button>
-                            </a>
-                            <a href="{% url 'main:delete_item' id=item.id %}" class="btn-link">
-                                <button type="button" class="btn btn-outline-danger">Delete</button>
-                            </a>
+    <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 row-cols-sm-1 g-4 mb-4 main-cards" style=".main-cards:last-child { color: red!important; }">
+        {% for item in items %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{item.name}}</h5>
+                    <p class="card-text mb-2">{{item.description}}</p>
+                    <div class="container text-left">
+                        <div class="row g-2 mb-1">
+                            <div class="text-body-secondary col-4 p-0">Price</div>
+                            <div class="col-8 p-0">${{item.price}}</div>
                         </div>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    
+                        <div class="row g-2 mb-1">
+                            <div class="text-body-secondary col-4 p-0">Amount</div>
+                            <div class="col-8 p-0">{{item.amount}}</div>
+                        </div>
+                        <div class="row g-2 mb-1">
+                            <div class="text-body-secondary col-4 p-0">Tags</div>
+                            <div class="text-body-tertiary col-8 p-0">{{item.tags}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="gap-2 d-flex justify-content-end">
+                        <a href="{% url 'main:increment_item' id=item.id %}" class="btn-link">
+                            <button type="button" class="btn btn-outline-secondary">+</button>
+                        </a>
+                        <a href="{% url 'main:decrement_item' id=item.id %}" class="btn-link">
+                            <button type="button" class="btn btn-outline-secondary">-</button>
+                        </a>
+                        <a href="{% url 'main:edit_item' id=item.id %}" class="btn-link">
+                            <button type="button" class="btn btn-outline-warning">Edit</button>
+                        </a>
+                        <a href="{% url 'main:delete_item' id=item.id %}" class="btn-link">
+                            <button type="button" class="btn btn-outline-danger">Delete</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+        
     </div>
     {% else %}
     <div class="mb-4">No items associated with this account!</div>
