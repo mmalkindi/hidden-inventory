@@ -1,5 +1,5 @@
 import datetime
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
 from django.core import serializers
 from main.forms import ItemForm
 from django.urls import reverse
@@ -7,6 +7,7 @@ from main.models import Item
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages  
 from django.contrib.auth.decorators import login_required
 
@@ -24,6 +25,11 @@ def show_main(request):
     }
 
     return render(request, "main.html", context)
+
+@login_required(login_url='/login')
+def get_items_json(request):
+    items = Item.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', items))
 
 ## User Accounts
 def register(request):
@@ -72,6 +78,18 @@ def create_item(request):
 
     context = {'form': form, 'page_title': "Register Item", 'display_name': request.user.username, 'subject_class': 'PBP A', 'last_login': request.COOKIES['last_login']}
     return render(request, "create_item.html", context)
+
+@login_required(login_url='/login')
+@csrf_exempt
+def add_item_ajax(request):
+    form = ItemForm(request.POST or None)
+    if form.is_valid() and request.method == 'POST':
+        item = form.save(commit=False)
+        item.user = request.user
+        item.save()
+
+        return HttpResponse(b"CREATED", status=201)
+    return HttpResponseNotFound()
 
 @login_required(login_url='/login')
 def edit_item(request, id):
