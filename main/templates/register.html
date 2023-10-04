@@ -1,26 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}  
-<div class = "login">
-    <h1>Register</h1>  
-        <form method="POST" >  
+<div class="outer-group">
+    <div class="mb-3 text-center fw-light fs-3 text">Register a new account</div>
+    <div class = "login rounded bg-light-subtle border p-4 shadow-sm">
+        <form method="POST">
             {% csrf_token %}  
-            <table>  
-                {{ form.as_table }}  
-                <tr>  
-                    <td></td>
-                    <td><input type="submit" name="submit" value="Daftar"/></td>  
-                </tr>  
+            <table class="table table-borderless table-transparent">
+                <tbody>
+                    {{ form.as_table }}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            <div class="d-grid gap-2 col-6 mx-auto mt-2">
+                            <button type="submit" class="login_btn btn btn-block btn-success">Daftar</button>
+                            </div>
+                        </td>
+                    </tr> 
+                </tfoot>
             </table>  
         </form>
 
-    {% if messages %}  
-        <ul>   
-            {% for message in messages %}  
-                <li color="#e25028">{{ message }}</li>  
-                {% endfor %}  
-        </ul>   
-    {% endif %}
+        {% if messages %}  
+            <ul>   
+                {% for message in messages %}  
+                    <li color="#e25028">{{ message }}</li>  
+                    {% endfor %}  
+            </ul>   
+        {% endif %}
 
-</div>  
+        <div class="text-center">Already have an account? <a href="{% url 'main:login' %}" class="link-offset-2 link-underline link-underline-opacity-0">Login</a></div>
+    </div>  
+</div>
 {% endblock content %}

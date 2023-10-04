@@ -3,67 +3,70 @@
 {% block meta %}
     <style>
         .description {
-            font-size: 80%;
             text-align: left;
+            overflow: hidden;
         }
-
     </style>
 {% endblock meta %}
 
 {% block content %}
-    <h1>{{ app_name }}</h1>
-
-    <p>Nama: {{ display_name }}</p>
-    <p>Kelas: {{ subject_class }}</p>
-
-    <p>Registered items: {{ items|length }}</p>
-    <table class="item-table">
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price ($)</th>
-            <th>Tags</th>
-            <th>Amount</th>
-            <th>Date Added</th>
-            <th colspan="3">Actions</th>
-        </tr>
-        
+    <h1>
+        Current Inventory
+    </h1>
+    <p class="bd-lead">
+        Registered items: {{ items|length }}
+    </p>
+    {% if items|length != 0  %}
+    <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 row-cols-sm-1 g-4 mb-4 main-cards" style=".main-cards:last-child { color: red!important; }">
         {% for item in items %}
-            <tr>
-                <td>{{item.name}}</td>
-                <td class="description">{{item.description}}</td>
-                <td>{{item.price}}</td>
-                <td>{{item.tags}}</td>
-                <td>{{item.amount}}</td>
-                <td>{{item.date_added}}</td>
-                <td>
-                    <a href="{% url 'main:increment_item' id=item.id %}">
-                        <button type="button">+1</button>
-                    </a>
-                </td>
-                <td>
-                    <a href="{% url 'main:decrement_item' id=item.id %}">
-                        <button type="button">-1</button>
-                    </a>
-                </td>
-                <td>
-                    <a href="{% url 'main:delete_item' id=item.id %}">
-                        <button type="button">🗑️</button>
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-    
-    <br/>
-    
-    <a href="{% url 'main:create_item' %}">
-        <button type="button">Register New</button>
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{item.name}}</h5>
+                    <p class="card-text mb-2">{{item.description}}</p>
+                    <div class="container text-left">
+                        <div class="row g-2 mb-1">
+                            <div class="text-body-secondary col-4 p-0">Price</div>
+                            <div class="col-8 p-0">${{item.price}}</div>
+                        </div>
+                        <div class="row g-2 mb-1">
+                            <div class="text-body-secondary col-4 p-0">Amount</div>
+                            <div class="col-8 p-0">{{item.amount}}</div>
+                        </div>
+                        <div class="row g-2 mb-1">
+                            <div class="text-body-secondary col-4 p-0">Tags</div>
+                            <div class="text-body-tertiary col-8 p-0">{{item.tags}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="gap-2 d-flex justify-content-end">
+                        <a href="{% url 'main:increment_item' id=item.id %}" class="btn-link">
+                            <button type="button" class="btn btn-outline-secondary">+</button>
+                        </a>
+                        <a href="{% url 'main:decrement_item' id=item.id %}" class="btn-link">
+                            <button type="button" class="btn btn-outline-secondary">-</button>
+                        </a>
+                        <a href="{% url 'main:edit_item' id=item.id %}" class="btn-link">
+                            <button type="button" class="btn btn-outline-warning">Edit</button>
+                        </a>
+                        <a href="{% url 'main:delete_item' id=item.id %}" class="btn-link">
+                            <button type="button" class="btn btn-outline-danger">Delete</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+        
+    </div>
+    {% else %}
+    <div class="mb-4">No items associated with this account!</div>
+    {% endif %}
+        
+    <a href="{% url 'main:create_item' %}" class="btn-link">
+        <button type="button" class="btn btn-primary">
+            Register New
+        </button>
     </a>
-    <a href="{% url 'main:logout' %}">
-        <button type="button">Logout</button>
-    </a>
-    <br>
-    <p>Sesi terakhir login: <samp>{{ last_login }}</samp></p><br>
-
 {% endblock content %}

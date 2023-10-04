@@ -7,10 +7,53 @@ Welcome to Hidden Inventory! • [🌐 Website](./README.md)
 | [Tugas 2](#tugas-2-implementasi-mvt-pada-django) |
 | [Tugas 3](#tugas-3-implementasi-form-dan-data-delivery) |
 | [Tugas 4](#tugas-4-implementasi-autentikasi-session-dan-cookies) |
+| [Tugas 5](#tugas-5-desain-web-menggunakan-html-css-dan-framework-css) |
+
+## Tugas 5: Desain Web menggunakan HTML, CSS dan Framework CSS
+
+<details open>
+  <summary>Jawaban pertanyaan ❔</summary>
+
+> *Jelaskan manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya*
+
+*Element selector* dapat digunakan untuk mengubah style semua elemen yang disebut. Selector ini cocok digunakan di awal file CSS sebagai *default* styling untuk elemen tersebut, namun masih bisa distyle lebih spesifik dengan selector lainnya di baris-baris selanjutnya.
+
+ID selector akan meng*apply* *style* untuk suatu ID tertentu. Karena suatu ID hanya bisa digunakan untuk satu elemen dalam HTML, maka selector ini bisa digunakan untuk mengubah satu dan hanya satu elemen dengan ID tersebut.
+
+Class selector akan menerapkan *style* yang ditulis untuk semua elemen yang memiliki *class* tersebut. Class selector digunakan oleh berbagai framework CSS seperti `Bootstrap` dan `tailwind` untuk menerapkan style sesuai dengan class dari framework tersebut.
+
+> *Jelaskan HTML5 Tag yang kamu ketahui.*
+
+1. `<div>`: Content Division element. Dengan `<div>`, kita bisa *grouping* elemen-elemen supaya lebih mudah untuk di*layout* dan di*style*, misalnya membuat sebuah *Card* dengan framework `Bootstrap`.
+2. `<table>`: Table element. Elemen ini berfungsi sebagai *root* element yang diperlukan oleh `<thead>`, `<tbody>`, `<tfoot>`, `<th>`, `<tr>`, dan `<td>` untuk membuat suatu tabel.
+3. `<form>`: Form element. Elemen ini digunakan untuk membuat sebuah *form* dalam HTML. Dengan bantuan `<input>` dan `<button>`, isi form bisa dikirim ke server menggunakan `HTTPRequest`.
+4. `<a>`: Anchor tag. Dengan atribut `href`, elemen ini berfungsi sebagai *link* yang bisa diklik oleh *user* untuk berpindah halaman website atau berpindah posisi dalam halaman.
+
+> *Jelaskan perbedaan antara margin dan padding.*
+
+Padding adalah area di antara *border* suatu elemen dengan kontennya, sedangkan margin adalah area di luar *border* suatu elemen.  
+
+> *Jelaskan perbedaan antara framework CSS Tailwind dan Bootstrap. Kapan sebaiknya kita menggunakan Bootstrap daripada Tailwind, dan sebaliknya?*
+
+`tailwind` dan `Bootstrap` memiliki *approach* yang berbeda untuk styling suatu website. Framework `tailwind` memiliki *utility-first apporach*, developer menerapkan *style* untuk suatu elemen dengan menambahkan style properti dalam bentuk *class*, misalnya `.font-medium` untuk membuat teks berukuran medium. File CSS yang mendefinisikan semua style akan kemudian di *trim* sehingga hanya class-class yang dipakai saja yang akan tersisa. Sementara itu, framework `Bootstrap` memberikan class-class yang mirip untuk properti, namun juga ada class-class yang sudah jadi dan langsung bisa dipakai, misalnya class `.table` untuk memberikan styling default pada `<table>` element.
+
+`tailwind` sebaiknya digunakan apabila kita sudah mengerti CSS dan ingin *styling*  element HTML sesuka hati, tanpa harus membuat dan mengingat nama untuk class yang ingin di*style*. Framework ini juga *recommended* digunakan apabila kita membuat web app dengan javascript framework seperti `React`.
+
+`Bootstrap` sebaiknya digunakan apabila kita ingin menggunakan style yang sudah ada *out-of-the-box*, misalnya class `.card` atau `.table`. `Bootstrap` juga akan memberikan penampilan yang lebih konsisten (walaupun terkesan sama dengan website `Bootstrap` lainnya).
+
+> *Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).*
+
+Pertama, saya menambahkan `Bootstrap` ke web app saya dengan tag `<link>` di head yang mengarah ke CDN bootstrap. Kemudian saya membuat file `navbar.html` dan `footer.html` yang akan di*include* oleh `base.html`. Saya membuat navbar di file `navbar.html` yang memuat nama aplikasi, link untuk menambahkan item (jika sudah login), dan juga dropdown dengan nama user yang sedang login dan tombol logout. Saya juga membuat footer di file `footer.html` yang memuat nama saya dan sesi terakhir login apabila user sudah login (dipindahkan dari `main.html`).
+
+Kemudian, saya menambahkan fungsi `edit_item()` di `views.py` untuk mengubah data suatu item dan juga menambahkan *decorator* `@login_required` untuk semua fungsi yang melibatkan `Item`. Saya membuat template `edit_item.html` dan *routing* url fungsi `edit_item` di `urls.py` supaya bisa diakses. Di halaman utama, saya menambahkan tombol **Edit** untuk setiap baris item yang ditampilkan.
+
+Setelah itu, saya mulai mendesain ulang semua halaman yang ada di web app saya. Untuk template `main.html`, saya mengubah tampilan *item* dari tabel menjadi `Bootstrap` *Cards*. Untuk halaman login dan register, saya mengambil inspirasi dari halaman sign-in Github.
+
+</details>
 
 ## Tugas 4: Implementasi Autentikasi, Session, dan Cookies
 
-<details open>
+<details>
     <summary>Jawaban pertanyaan ❔</summary>
 
 > *Apa itu Django `UserCreationForm`, dan jelaskan apa kelebihan dan kekurangannya?*
