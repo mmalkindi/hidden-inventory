@@ -1,6 +1,11 @@
 # Hidden Inventory
 
-Welcome to Hidden Inventory! • [🌐 Website](./README.md)
+Welcome to Hidden Inventory! • [🌐 Website](http://muhammad-milian-tugas.pbp.cs.ui.ac.id/)
+
+```credential
+Nama  : Muhammad Milian Alkindi
+Kelas : PBP A
+```
 
 | Jump ke tugas |
 | :-: |
@@ -8,10 +13,38 @@ Welcome to Hidden Inventory! • [🌐 Website](./README.md)
 | [Tugas 3](#tugas-3-implementasi-form-dan-data-delivery) |
 | [Tugas 4](#tugas-4-implementasi-autentikasi-session-dan-cookies) |
 | [Tugas 5](#tugas-5-desain-web-menggunakan-html-css-dan-framework-css) |
+| [Tugas 6](#tugas-6-javascript-dan-asynchronous-javascript) |
+
+## Tugas 6: JavaScript dan Asynchronous JavaScript
+
+<details open>
+  <summary>Jawaban pertanyaan ❔</summary>
+
+> Jelaskan perbedaan antara *asynchronous programming* dengan *synchronous programming*.
+
+...
+
+> Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma *event-driven programming*. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini.
+
+...
+
+> Jelaskan penerapan *asynchronous programming* pada AJAX.
+
+...
+
+> Pada PBP kali ini, penerapan AJAX dilakukan dengan menggunakan Fetch API daripada *library* jQuery. Bandingkanlah kedua teknologi tersebut dan tuliskan pendapat kamu teknologi manakah yang lebih baik untuk digunakan.
+
+🤔
+
+> Jelaskan bagaimana cara kamu mengimplementasikan *checklist* di atas secara *step-by-step* (bukan hanya sekadar mengikuti tutorial).
+
+...
+
+</details>
 
 ## Tugas 5: Desain Web menggunakan HTML, CSS dan Framework CSS
 
-<details open>
+<details>
   <summary>Jawaban pertanyaan ❔</summary>
 
 > *Jelaskan manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya*
