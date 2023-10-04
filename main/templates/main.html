@@ -19,15 +19,31 @@
     </p>
     {% if items|length != 0  %}
     <div id="item_table" class="row row-cols-1 row-cols-lg-4 row-cols-md-2 row-cols-sm-1 g-4 mb-4 main-cards" style=".main-cards:last-child { color: red!important; }">        
+        <div class="card" aria-hidden="true">
+            <div class="card-body">
+              <h5 class="card-title placeholder-glow">
+                <span class="placeholder col-   6"></span>
+              </h5>
+              <p class="card-text placeholder-glow">
+                <span class="placeholder col-7"></span>
+                <span class="placeholder col-4"></span>
+                <span class="placeholder col-4"></span>
+                <span class="placeholder col-6"></span>
+                <span class="placeholder col-8"></span>
+              </p>
+              <a class="btn btn-primary disabled placeholder col-6" aria-disabled="true"></a>
+            </div>
+          </div>
+          
     </div>
     {% else %}
     <div class="mb-4">No items associated with this account!</div>
     {% endif %}
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Item</button>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Add Item</button>
 
     <!-- MODAL -->
-    {% include 'ajax_add.html' %}
+    {% include 'ajax_add_modal.html' %}
     
     <script>
         async function getItems() {
@@ -72,16 +88,16 @@
                             </div>
                             <div class="card-footer">
                                 <div class="gap-2 d-flex justify-content-end">
-                                    <a href="${link_add_item}" class="btn-link">
+                                    <a href="${link_add_item}" class="link-btn">
                                         <button type="button" class="btn btn-outline-secondary">+</button>
                                     </a>
-                                    <a href="${link_reduce_item}" class="btn-link">
+                                    <a href="${link_reduce_item}" class="link-btn">
                                         <button type="button" class="btn btn-outline-secondary">-</button>
                                     </a>
-                                    <a href="${link_edit_item}" class="btn-link">
+                                    <a href="${link_edit_item}" class="link-btn">
                                         <button type="button" class="btn btn-outline-warning">Edit</button>
                                     </a>
-                                    <a href="${link_delete_item}" class="btn-link">
+                                    <a href="${link_delete_item}" class="link-btn">
                                         <button type="button" class="btn btn-outline-danger">Delete</button>
                                     </a>
                                 </div>
@@ -94,12 +110,12 @@
         refreshItems()
 
         function addItem() {
-            fetch("{% url 'main:add_item_ajax' %}", {
+            fetch("{% url 'main:create_item_ajax' %}", {
                 method: "POST",
-                body: new FormData(document.querySelector('#form'))
+                body: new FormData(document.querySelector('#add-item-form'))
             }).then(refreshItems)
 
-            document.getElementById("form").reset()
+            document.getElementById("add-item-form").reset()
             return false
         }
         document.getElementById("button_add").onclick = addItem

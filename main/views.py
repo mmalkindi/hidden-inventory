@@ -14,6 +14,9 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required(login_url='/login')
 def show_main(request):
+    if 'last_login' not in request.COOKIES.keys():
+        return redirect('main:login')
+    
     items = Item.objects.filter(user=request.user)
 
     context = {
@@ -26,25 +29,28 @@ def show_main(request):
 
     return render(request, "main.html", context)
 
-@login_required(login_url='/login')
 def get_items_json(request):
     items = Item.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize('json', items))
 
 ## User Accounts
 def register(request):
+    if 'last_login' in request.COOKIES.keys():
+            return redirect('main:login')
+    
     form = UserCreationForm()
-
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Your account has been successfully created!')
-            return redirect('main:login')
+            return redirect('main:show_main')
     context = {'form':form, 'page_title': "Register"}
     return render(request, 'register.html', context)
 
 def login_user(request):
+    if 'last_login' in request.COOKIES.keys():
+            return redirect('main:login')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -80,10 +86,14 @@ def create_item(request):
     return render(request, "create_item.html", context)
 
 @login_required(login_url='/login')
-def add_item_ajax(request):
-    form = ItemForm(request.POST or None)
-    if form.is_valid() and request.method == 'POST':
-        item = form.save(commit=False)
+def create_item_ajax(request):
+    if request.method == 'POST':
+        item = Item()
+        item.name = request.POST.get("name")
+        item.amount = request.POST.get("amount")
+        item.price = request.POST.get("price")
+        item.description = request.POST.get("description")
+        item.tags = request.POST.get("tags")
         item.user = request.user
         item.save()
 
