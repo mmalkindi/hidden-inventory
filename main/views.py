@@ -1,5 +1,5 @@
 import datetime
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
 from django.core import serializers
 from main.forms import ItemForm
 from django.urls import reverse
@@ -7,12 +7,16 @@ from main.models import Item
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages  
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 @login_required(login_url='/login')
 def show_main(request):
+    if 'last_login' not in request.COOKIES.keys():
+        return redirect('main:login')
+    
     items = Item.objects.filter(user=request.user)
 
     context = {
@@ -25,20 +29,32 @@ def show_main(request):
 
     return render(request, "main.html", context)
 
+def get_items_json(request):
+    items = Item.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', items))
+
+def get_an_item(request, id):
+    item = Item.objects.filter(user=request.user, pk=id)
+    return HttpResponse(serializers.serialize('json', item))
+
 ## User Accounts
 def register(request):
+    if 'last_login' in request.COOKIES.keys():
+            return redirect('main:login')
+    
     form = UserCreationForm()
-
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Your account has been successfully created!')
-            return redirect('main:login')
+            return redirect('main:show_main')
     context = {'form':form, 'page_title': "Register"}
     return render(request, 'register.html', context)
 
 def login_user(request):
+    if 'last_login' in request.COOKIES.keys():
+            return redirect('main:login')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -72,6 +88,21 @@ def create_item(request):
 
     context = {'form': form, 'page_title': "Register Item", 'display_name': request.user.username, 'subject_class': 'PBP A', 'last_login': request.COOKIES['last_login']}
     return render(request, "create_item.html", context)
+
+@login_required(login_url='/login')
+def create_item_ajax(request):
+    if request.method == 'POST':
+        item = Item()
+        item.name = request.POST.get("name")
+        item.amount = request.POST.get("amount")
+        item.price = request.POST.get("price")
+        item.description = request.POST.get("description")
+        item.tags = request.POST.get("tags")
+        item.user = request.user
+        item.save()
+
+        return HttpResponse(b"CREATED", status=201)
+    return HttpResponseNotFound()
 
 @login_required(login_url='/login')
 def edit_item(request, id):
@@ -109,8 +140,17 @@ def decrement_item(request, id):
 @login_required(login_url='/login')
 def delete_item(request, id):
     item = Item.objects.get(id=id)
-    item.delete()
+    if request.user == item.user:
+        item.delete()
     return HttpResponseRedirect(reverse('main:show_main'))
+
+@login_required(login_url='/login')
+def delete_item_ajax(request, id):
+    item = Item.objects.get(id=id)
+    if request.method == 'POST' and request.user == item.user:
+        item.delete()
+        return HttpResponse(b"CREATED", status=201)
+    return HttpResponseNotFound()
 
 # Data related
 def show_xml(request):

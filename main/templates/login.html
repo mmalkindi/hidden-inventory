@@ -6,32 +6,17 @@
     <div class="login rounded bg-light bg-gradient border p-4 shadow-sm">
         <form method="POST" action="">
             {% csrf_token %}
-            <table class="table table-borderless table-transparent align-middle table-sm">
-                <tbody>
-                    <tr>
-                        <td>Username: </td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="username" class="form-control"></td>
-                    </tr>
-                            
-                    <tr>
-                        <td>Password: </td>
-                    </tr>
-                    <tr>
-                        <td><input type="password" name="password" class="form-control"></td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="2">
-                            <div class="d-grid gap-2 mx-auto mt-2">
-                            <button type="submit" class="login_btn btn btn-block btn-primary">Login</button>
-                            </div>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="loginUsername" name="username" placeholder>
+                <label for="loginUsername">Username</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="loginPassword" name="password" placeholder>
+                <label for="loginPassword">Password</label>
+            </div>
+            <div class="d-grid gap-2 mx-auto mt-2 mb-3">
+                <button type="submit" class="login_btn btn btn-block btn-primary">Login</button>
+            </div>
         </form>
     
         {% if messages %}
