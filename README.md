@@ -42,7 +42,9 @@ dengan jalannya kode yang ada di fungsi `async` tersebut.
 
 > Pada PBP kali ini, penerapan AJAX dilakukan dengan menggunakan Fetch API daripada *library* jQuery. Bandingkanlah kedua teknologi tersebut dan tuliskan pendapat kamu teknologi manakah yang lebih baik untuk digunakan.
 
-🤔
+Fetch API adalah fitur *built-in* dari Javascript untuk melakukan *request* sehingga bisa digunakan apabila kita memilih untuk tidak menggunakan library jQuery.
+Method `ajax` di jQuery melakukan hal yang sama, namun dalam bentuk yang lebih rapih. Tidak ada salahnya untuk menggunakan satu diantara keduanya, tetapi saya lebih
+memilih untuk menggunakan jQuery karena *overall* kode Javascript lebih mudah untuk dibaca (kecuali sedang menggunakan framework JS lainnya).
 
 > Jelaskan bagaimana cara kamu mengimplementasikan *checklist* di atas secara *step-by-step* (bukan hanya sekadar mengikuti tutorial).
 
