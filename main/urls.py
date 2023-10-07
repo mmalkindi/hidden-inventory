@@ -16,6 +16,7 @@ urlpatterns = [
     path('delete/<int:id>/', delete_item, name='delete_item'),
     path('delete-ajax/<int:id>/', delete_item_ajax, name='delete_item_ajax'), 
     path('get-items/', get_items_json, name='get_items_json'),
+    path('get-item/<int:id>', get_an_item, name='get_an_item'),
     path('xml/', show_xml, name='show_xml'),
     path('json/', show_json, name='show_json'),
     path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
