@@ -22,15 +22,23 @@ Kelas : PBP A
 
 > Jelaskan perbedaan antara *asynchronous programming* dengan *synchronous programming*.
 
-...
+Dari namanya, *asynchronous programming* adalah programming dimana operasi diprogram untuk dapat berjalan bersamaan (parallel).
+Ketika suatu blok kode dijalankan secara *async*, kode tersebut tidak akan menghentikan kode diluarnya untuk berhenti berjalan.
+
+Berbeda dengan *synchronous programming*, dimana program berjalan secara linear. Bagian kode yang dijalankan secara *synchronous* akan harus
+selesai dahulu (atau mengembalikan suatu nilai untuk fungsi) sebelum bisa lanjut ke baris selanjutnya.
 
 > Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma *event-driven programming*. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini.
 
-...
+*Event-driven programming* adalah paradigma dimana suaut bagian kode menunggu *event*/peristiwa terjadi sebelum dieksekusi.
+Contohnya dalam tugas ini, ada tombol dengan Id `button_add` akan memicu event `onclick` pada saat tombol diklik, dan *event* tersebut
+akan menjalankan fungsi `addItem`.
 
 > Jelaskan penerapan *asynchronous programming* pada AJAX.
 
-...
+AJAX adalah penerapan Javascript secara *asynchronous*. Penerapannya ada dalam membuat fungsi yang bekerja secara asinkronus, yaitu dengan
+menambahkan keyword `async` didepan deklarasi fungsi Javascript. Ketika fungsi ini dpanggil, program akan lanjut ke baris selanjutnya bersamaan (paralel)
+dengan jalannya kode yang ada di fungsi `async` tersebut.
 
 > Pada PBP kali ini, penerapan AJAX dilakukan dengan menggunakan Fetch API daripada *library* jQuery. Bandingkanlah kedua teknologi tersebut dan tuliskan pendapat kamu teknologi manakah yang lebih baik untuk digunakan.
 
@@ -38,7 +46,24 @@ Kelas : PBP A
 
 > Jelaskan bagaimana cara kamu mengimplementasikan *checklist* di atas secara *step-by-step* (bukan hanya sekadar mengikuti tutorial).
 
-...
+Pertama-tama, saya membuat file `ajax_add_modal.html` untuk menampung markup *modal* yang akan muncul ketika user mengklik tombol tambah *item*. Setelah modal selesai
+saya kostumasi, saya menambahkan `include` file HTML modal di template `main.html` dan menambahkan kode Javascript di bagian paling bawah. Dalam bagian `<script>` tag,
+saya menambahkan fungsi untuk mengambil item secara `async` (`getItems()`), fungsi refresh *card* yang ditampilkan secara `async` (`refreshItems()`), dan fungsi yang
+akan berjalan ketika mendapatkan *event signal* dari tombol `#button_add` di modal diklik oleh *user* (`addItem()`).
+
+Supaya fungsi tersebut dapat berinteraksi dengan data pada aplikasi django, saya menambahkan beberapa fungsi di `views.py`. Fungsi `get_items_json()` akan mengembalikan
+data semua `Item` milik user dalam bentuk `JSON`, dan fungsi `create_item_ajax()` akan menyimpan data yang dikirim menjadi suatu objek `Item` dan mengembalikan *status*.
+Kedua fungsi tersebut saya *routing* di `urls.py` supaya bisa diakses oleh Javascript di `main.html`.
+
+Kembali lagi ke file `main.html`, fungsi `async` `getItems()` akan mengembalikan data yang di*fetch* dari `get_items_json()` supaya bisa digunakan oleh `refreshItems()`.
+Fungsi `refreshItems()` akan menunggu (`await`) hasil *return* dari `getItems()` dan kemudian *looping* tiap data `Item` untuk menambahkan string HTML *card* milik `item`
+tersebut. Setelah selsai *loop*, *string* tersebut akan menjadi `innerHTML`* dari element `#item_table`.
+
+Selanjutnya, saya menambahkan fungsi `addItem()` yang akan mengirimkan request dengan method `POST` dengan data dari *form* yang ada di modal. Setelah data diproses oleh
+fungsi `create_item_ajax()` di `views.py`, dipanggil fungsi `refreshItems()` supaya tampilan di halaman berubah tanpa perlu *refresh*. *Event* `onclick` dari tombol
+`#button_add` yang ada di modal kemudian disambungkan dengan fungsi `addItem()`. Modal akan secara otomatis ditutup dan data dalam field dihapus (thx Bootstrap).
+
+Terakhir, saya menjalankan program `py manage.py collectstatic` dan mengatur file-file yang diperlukan untuk *deployment* web ke PaaS PBP Fasilkom UI.
 
 </details>
 
@@ -49,11 +74,15 @@ Kelas : PBP A
 
 > *Jelaskan manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya*
 
-*Element selector* dapat digunakan untuk mengubah style semua elemen yang disebut. Selector ini cocok digunakan di awal file CSS sebagai *default* styling untuk elemen tersebut, namun masih bisa distyle lebih spesifik dengan selector lainnya di baris-baris selanjutnya.
+*Element selector* dapat digunakan untuk mengubah style semua elemen yang disebut.
+Selector ini cocok digunakan di awal file CSS sebagai *default* styling untuk elemen tersebut,
+namun masih bisa distyle lebih spesifik dengan selector lainnya di baris-baris selanjutnya.
 
-ID selector akan meng*apply* *style* untuk suatu ID tertentu. Karena suatu ID hanya bisa digunakan untuk satu elemen dalam HTML, maka selector ini bisa digunakan untuk mengubah satu dan hanya satu elemen dengan ID tersebut.
+ID selector akan meng*apply* *style* untuk suatu ID tertentu. Karena suatu ID hanya bisa digunakan untuk satu elemen dalam HTML,
+maka selector ini bisa digunakan untuk mengubah satu dan hanya satu elemen dengan ID tersebut.
 
-Class selector akan menerapkan *style* yang ditulis untuk semua elemen yang memiliki *class* tersebut. Class selector digunakan oleh berbagai framework CSS seperti `Bootstrap` dan `tailwind` untuk menerapkan style sesuai dengan class dari framework tersebut.
+Class selector akan menerapkan *style* yang ditulis untuk semua elemen yang memiliki *class* tersebut.
+Class selector digunakan oleh berbagai framework CSS seperti `Bootstrap` dan `tailwind` untuk menerapkan style sesuai dengan class dari framework tersebut.
 
 > *Jelaskan HTML5 Tag yang kamu ketahui.*
 
@@ -68,19 +97,30 @@ Padding adalah area di antara *border* suatu elemen dengan kontennya, sedangkan 
 
 > *Jelaskan perbedaan antara framework CSS Tailwind dan Bootstrap. Kapan sebaiknya kita menggunakan Bootstrap daripada Tailwind, dan sebaliknya?*
 
-`tailwind` dan `Bootstrap` memiliki *approach* yang berbeda untuk styling suatu website. Framework `tailwind` memiliki *utility-first apporach*, developer menerapkan *style* untuk suatu elemen dengan menambahkan style properti dalam bentuk *class*, misalnya `.font-medium` untuk membuat teks berukuran medium. File CSS yang mendefinisikan semua style akan kemudian di *trim* sehingga hanya class-class yang dipakai saja yang akan tersisa. Sementara itu, framework `Bootstrap` memberikan class-class yang mirip untuk properti, namun juga ada class-class yang sudah jadi dan langsung bisa dipakai, misalnya class `.table` untuk memberikan styling default pada `<table>` element.
+`tailwind` dan `Bootstrap` memiliki *approach* yang berbeda untuk styling suatu website.
+Framework `tailwind` memiliki *utility-first apporach*, developer menerapkan *style* untuk suatu elemen dengan menambahkan style properti dalam bentuk *class*,
+misalnya `.font-medium` untuk membuat teks berukuran medium. File CSS yang mendefinisikan semua style akan kemudian di *trim* sehingga hanya class-class
+yang dipakai saja yang akan tersisa. Sementara itu, framework `Bootstrap` memberikan class-class yang mirip untuk properti, namun juga ada class-class
+yang sudah jadi dan langsung bisa dipakai, misalnya class `.table` untuk memberikan styling default pada `<table>` element.
 
-`tailwind` sebaiknya digunakan apabila kita sudah mengerti CSS dan ingin *styling*  element HTML sesuka hati, tanpa harus membuat dan mengingat nama untuk class yang ingin di*style*. Framework ini juga *recommended* digunakan apabila kita membuat web app dengan javascript framework seperti `React`.
+`tailwind` sebaiknya digunakan apabila kita sudah mengerti CSS dan ingin *styling*  element HTML sesuka hati,tanpa harus membuat dan mengingat
+nama untuk class yang ingin di*style*. Framework ini juga *recommended* digunakan apabila kita membuat web app dengan javascript framework seperti `React`.
 
-`Bootstrap` sebaiknya digunakan apabila kita ingin menggunakan style yang sudah ada *out-of-the-box*, misalnya class `.card` atau `.table`. `Bootstrap` juga akan memberikan penampilan yang lebih konsisten (walaupun terkesan sama dengan website `Bootstrap` lainnya).
+`Bootstrap` sebaiknya digunakan apabila kita ingin menggunakan style yang sudah ada *out-of-the-box*, misalnya class `.card` atau `.table`.
+`Bootstrap` juga akan memberikan penampilan yang lebih konsisten (walaupun terkesan sama dengan website `Bootstrap` lainnya).
 
 > *Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).*
 
-Pertama, saya menambahkan `Bootstrap` ke web app saya dengan tag `<link>` di head yang mengarah ke CDN bootstrap. Kemudian saya membuat file `navbar.html` dan `footer.html` yang akan di*include* oleh `base.html`. Saya membuat navbar di file `navbar.html` yang memuat nama aplikasi, link untuk menambahkan item (jika sudah login), dan juga dropdown dengan nama user yang sedang login dan tombol logout. Saya juga membuat footer di file `footer.html` yang memuat nama saya dan sesi terakhir login apabila user sudah login (dipindahkan dari `main.html`).
+Pertama, saya menambahkan `Bootstrap` ke web app saya dengan tag `<link>` di head yang mengarah ke CDN bootstrap.
+Kemudian saya membuat file `navbar.html` dan `footer.html` yang akan di*include* oleh `base.html`. Saya membuat navbar di file `navbar.html` yang memuat nama aplikasi, link untuk menambahkan item (jika sudah login), dan juga dropdown dengan nama user yang sedang login dan tombol logout.
+Saya juga membuat footer di file `footer.html` yang memuat nama saya dan sesi terakhir login apabila user sudah login (dipindahkan dari `main.html`).
 
-Kemudian, saya menambahkan fungsi `edit_item()` di `views.py` untuk mengubah data suatu item dan juga menambahkan *decorator* `@login_required` untuk semua fungsi yang melibatkan `Item`. Saya membuat template `edit_item.html` dan *routing* url fungsi `edit_item` di `urls.py` supaya bisa diakses. Di halaman utama, saya menambahkan tombol **Edit** untuk setiap baris item yang ditampilkan.
+Kemudian, saya menambahkan fungsi `edit_item()` di `views.py` untuk mengubah data suatu item dan juga menambahkan *decorator* `@login_required` untuk
+semua fungsi yang melibatkan `Item`. Saya membuat template `edit_item.html` dan *routing* url fungsi `edit_item` di `urls.py` supaya bisa diakses.
+Di halaman utama, saya menambahkan tombol **Edit** untuk setiap baris item yang ditampilkan.
 
-Setelah itu, saya mulai mendesain ulang semua halaman yang ada di web app saya. Untuk template `main.html`, saya mengubah tampilan *item* dari tabel menjadi `Bootstrap` *Cards*. Untuk halaman login dan register, saya mengambil inspirasi dari halaman sign-in Github.
+Setelah itu, saya mulai mendesain ulang semua halaman yang ada di web app saya. Untuk template `main.html`, saya mengubah tampilan *item* dari tabel
+menjadi `Bootstrap` *Cards*. Untuk halaman login dan register, saya mengambil inspirasi dari halaman sign-in Github.
 
 </details>
 
@@ -91,31 +131,47 @@ Setelah itu, saya mulai mendesain ulang semua halaman yang ada di web app saya. 
 
 > *Apa itu Django `UserCreationForm`, dan jelaskan apa kelebihan dan kekurangannya?*
 
-`UserCreationForm` adalah suatu `ModelForm` dalam framework Django yang dapat digunakan untuk membuat `user` baru. `UserCreationForm` menerima `username`, `password1`, dan `password2`, dengan `password1` dan `password2` dicek kesamaannya sebelum password divalidasi dan di*set* menjadi milik `user` yang baru dibuat. *Class* ini tidak memperbolehkan pembuatan akun baru dengan username yang sudah ada.
+`UserCreationForm` adalah suatu `ModelForm` dalam framework Django yang dapat digunakan untuk membuat `user` baru.
+`UserCreationForm` menerima `username`, `password1`, dan `password2`, dengan `password1` dan `password2` dicek kesamaannya sebelum password divalidasi
+dan di*set* menjadi milik `user` yang baru dibuat. *Class* ini tidak memperbolehkan pembuatan akun baru dengan username yang sudah ada.
 
 Kelebihan: Sangat mudah untuk meng-extend *class* ini untuk menambah `field` yang kita inginkan. Misal field `email`, `phone_number`.  
-Kekurangan: Kurang cocok apabila ingin membuat `user` baru tanpa menggunakan field `username` dan `password`, misalnya untuk pembuatan akun dengan service lainnya (Sign in with Google/Apple/etc).
+Kekurangan: Kurang cocok apabila ingin membuat `user` baru tanpa menggunakan field `username` dan `password`,
+misalnya untuk pembuatan akun dengan service lainnya (Sign in with Google/Apple/etc).
 
 > *Apa perbedaan antara autentikasi dan otorisasi dalam konteks Django, dan mengapa keduanya penting?*
 
 Autentikasi adalah proses verifikasi siapa yang sedang menggunakan (login user/admin panel).  
 Otorisasi adalah proses verifikasi akses yang dimiliki pengguna (data permissions).
 
-Kedua hal tersebut penting dalam pembuatan web app yang melibatkan akun user. Kita perlu untuk mengautentikasi pengguna supaya kita tahu siapa yang sedang menggunakan aplikasi kita, bisa melalui `cookies` dan/atau `sessions`. Kita juga harus mengecek akses yang dimiliki pengguna (otorisasi) ketika dipanggil *request* get, add, set, remove, atau change data yang berhubungan dengar sistem.
+Kedua hal tersebut penting dalam pembuatan web app yang melibatkan akun user. Kita perlu untuk mengautentikasi pengguna supaya kita tahu siapa yang sedang menggunakan
+aplikasi kita, bisa melalui `cookies` dan/atau `sessions`. Kita juga harus mengecek akses yang dimiliki pengguna (otorisasi) ketika dipanggil *request*
+get, add, set, remove, atau change data yang berhubungan dengar sistem.
 
 > *Apa itu cookies dalam konteks aplikasi web, dan bagaimana Django menggunakan cookies untuk mengelola data sesi pengguna?*
 
-`Cookies` adalah salah satu cara menyimpan data di web browser `client`, yang nanti dapat diakses kembali oleh aplikasi. Suatu `cookie` memiliki *expiration date*, dan akan dihapus otomatis setelah melewati tanggal ekspirasinya. Django memberikan developer method-method untuk *fetch* dan *set* cookies yang bisa kita gunakan untuk web app, misalnya untuk menyimpan *login credentials*.
+`Cookies` adalah salah satu cara menyimpan data di web browser `client`, yang nanti dapat diakses kembali oleh aplikasi. Suatu `cookie` memiliki *expiration date*, dan
+akan dihapus otomatis setelah melewati tanggal ekspirasinya. Django memberikan developer method-method untuk *fetch* dan *set* cookies yang bisa kita gunakan untuk
+web app, misalnya untuk menyimpan *login credentials*.
 
 > *Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai?*
 
-**Tidak**. `Cookies` secara default akan menyimpan data dalam bentuk teks, sehingga perlu kita *encrypt* data sensitif untuk `cookie` tersebut supaya data tidak bisa dicuri oleh pihak ketiga. `Cookie` juga bisa menjadi target dari serangan XSS (Cross Site Scripting) apabila data dari `cookie` digunakan untuk mengeksekusi kode. Penggunaan cookies juga harus mengikuti aturan-aturan privasi *online*, seperti memberikan popup ke user apabila `cookie` digunakan untuk *tracking*.
+**Tidak**. `Cookies` secara default akan menyimpan data dalam bentuk teks, sehingga perlu kita *encrypt* data sensitif untuk `cookie` tersebut supaya data tidak bisa
+dicuri oleh pihak ketiga. `Cookie` juga bisa menjadi target dari serangan XSS (Cross Site Scripting) apabila data dari `cookie` digunakan untuk mengeksekusi kode.
+Penggunaan cookies juga harus mengikuti aturan-aturan privasi *online*, seperti memberikan popup ke user apabila `cookie` digunakan untuk *tracking*.
 
 > *Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).*
 
-Pertama, saya membuat fungsi `register()`, `login()`, dan `logout()` di `views.py` dalam direktori `main`. Kemudian, saya membuat template `register.html` dan `login.html` untuk memfasilitasi `register()` dan `login()` user ke web app. Ketiga fungsi baru tersebut kemudian saya *routing* urlnya di `urls.py` aplikasi `main` supaya bisa diakses dan dijalankan. Fungsi `login` dan `logout` juga sudah menggunakan data dari `cookies` supaya *login credentials* user dapat disimpan dan/atau dihapus. Fungsi `show_main()` di `views.py` juga di*restrict* supaya hanya bisa diakses apabila ada *login credentials* yang tersimpan. File template `main.html` ditambahkan tombol `logout` supaya user bisa log out dari aplikasi. Kemudian saya buat 2 akun lokal untuk mengecek apabila sistem register/login/logout bekerja dengan baik.
+Pertama, saya membuat fungsi `register()`, `login()`, dan `logout()` di `views.py` dalam direktori `main`. Kemudian, saya membuat template `register.html` dan `login.html`
+untuk memfasilitasi `register()` dan `login()` user ke web app. Ketiga fungsi baru tersebut kemudian saya *routing* urlnya di `urls.py` aplikasi `main` supaya bisa diakses
+dan dijalankan. Fungsi `login` dan `logout` juga sudah menggunakan data dari `cookies` supaya *login credentials* user dapat disimpan dan/atau dihapus.
+Fungsi `show_main()` di `views.py` juga di*restrict* supaya hanya bisa diakses apabila ada *login credentials* yang tersimpan. File template `main.html` ditambahkan tombol
+`logout` supaya user bisa log out dari aplikasi. Kemudian saya buat 2 akun lokal untuk mengecek apabila sistem register/login/logout bekerja dengan baik.
 
-Selanjutnya, saya modifikasi kelas `Item` di `models.py` untuk menambah field `user` yang akan menghubungkan suatu item dengan user menggunakan *relationship* one-to-one. Fungsi `create_item()` di `views.py` juga diubah untuk mengisi field `user` secara otomatis sebelum kemudian disimpan ke database. Model dimigrasi dengan semua `Item` yang sudah ada dianggap milik user dengan `id=1`. Saya juga mengubah `context` yang dikirimkan oleh `show_main()` di `views.py` untuk memuat username pengguna di field `display_name` dan data login terakhir di field `last_login`. Data tersebut akan ditampilkan di halaman utama web app setelah login.
+Selanjutnya, saya modifikasi kelas `Item` di `models.py` untuk menambah field `user` yang akan menghubungkan suatu item dengan user menggunakan *relationship* one-to-one.
+Fungsi `create_item()` di `views.py` juga diubah untuk mengisi field `user` secara otomatis sebelum kemudian disimpan ke database.
+Model dimigrasi dengan semua `Item` yang sudah ada dianggap milik user dengan `id=1`. Saya juga mengubah `context` yang dikirimkan oleh `show_main()` di `views.py`
+untuk memuat username pengguna di field `display_name` dan data login terakhir di field `last_login`. Data tersebut akan ditampilkan di halaman utama web app setelah login.
 
 </details>
 
@@ -126,9 +182,12 @@ Selanjutnya, saya modifikasi kelas `Item` di `models.py` untuk menambah field `u
 
 > *Apa perbedaan antara form `POST` dan form `GET` dalam Django?*
 
-Form yang menggunakan method `POST` akan mengirim ke server semua data yang di*submit* (setelah di*encode* terlebih dulu), dan kemudian menerima HTTPResponse dari server yang bersangkutan dengan form tersebut. Method ini sebaiknya digunakan untuk mengirim/meminta data yang sensitif dari *database* seperti detail *login* user.
+Form yang menggunakan method `POST` akan mengirim ke server semua data yang di*submit* (setelah di*encode* terlebih dulu), dan kemudian menerima HTTPResponse dari server
+yang bersangkutan dengan form tersebut. Method ini sebaiknya digunakan untuk mengirim/meminta data yang sensitif dari *database* seperti detail *login* user.
 
-Form dengan method `GET` akan menggabung data yang dikirim menjadi suatu *string* dan digunakan untuk membuat (*compose*) suatu URL. Bisa juga dianggap data diinput melalui link. Method ini cocok untuk mengambil data yang tidak sensitif dari server, misalnya *search query* ketika sedang menggunakan fitur search, contoh: `https://www.youtube.com/results?search_query=django` dengan field dari form `search_query` yang bernilai `django`.
+Form dengan method `GET` akan menggabung data yang dikirim menjadi suatu *string* dan digunakan untuk membuat (*compose*) suatu URL. Bisa juga dianggap data diinput
+melalui link. Method ini cocok untuk mengambil data yang tidak sensitif dari server, misalnya *search query* ketika sedang menggunakan fitur search,
+contoh: `https://www.youtube.com/results?search_query=django` dengan field dari form `search_query` yang bernilai `django`.
 
 > *Apa perbedaan utama antara XML, JSON, dan HTML dalam konteks pengiriman data?*
 
@@ -142,11 +201,19 @@ Karena, JSON memiliki struktur data yang mudah untuk di*parse* oleh aplikasi web
 
 > *Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).*
 
-Pertama, saya membuat file `forms.py` untuk mendefinisikan field mana saja yang bisa diubah oleh user. Untuk web ini, user dapat mengisi field `name`, `amount`, `description`, `price`, dan `tags` suatu objek `Item`, dengan field `date_added` diisi secara otomatis. Kemudian di `views.py`, saya menambah beberapa import dan suatu fungsi baru untuk menambah data produk yang diisi ke dalam *database*. Fungsi `show_main()` juga saya modifikasi untuk memuat data semua objek `Item` supaya bisa ditampilkan di halaman utama.
+Pertama, saya membuat file `forms.py` untuk mendefinisikan field mana saja yang bisa diubah oleh user.
+Untuk web ini, user dapat mengisi field `name`, `amount`, `description`, `price`, dan `tags` suatu objek `Item`, dengan field `date_added` diisi secara otomatis.
+Kemudian di `views.py`, saya menambah beberapa import dan suatu fungsi baru untuk menambah data produk yang diisi ke dalam *database*.
+Fungsi `show_main()` juga saya modifikasi untuk memuat data semua objek `Item` supaya bisa ditampilkan di halaman utama.
 
-Kemudian, saya membuat template `create_item.html` sebagai halaman untuk mengisi dan mengirimkan form. Template halaman utama juga saya modifikasi untuk menampilkan data semua `Item` di database dalam bentuk *table*. Supaya halaman `create-item` bisa diakses, saya menambahkan pathnya ke `urls.py` serta link di halaman utama ke path tersebut.
+Kemudian, saya membuat template `create_item.html` sebagai halaman untuk mengisi dan mengirimkan form.
+Template halaman utama juga saya modifikasi untuk menampilkan data semua `Item` di database dalam bentuk *table*.
+Supaya halaman `create-item` bisa diakses, saya menambahkan pathnya ke `urls.py` serta link di halaman utama ke path tersebut.
 
-Untuk menampilkan data dalam bentuk XML dan JSON, saya menambahkan fungsi `show_xml()` dan `show_json()` di `views.py`. Untuk hanya menampilkan data objek `Item` dengan `pk` tertentu saya menambahkan fungsi `show_xml_by_id()` dan `show_json_by_id()` ke `views.py`, yang akan menggunakan `id` dari URL untuk mengambil data objek yang diinginkan. Supaya bisa diakses dengan URL, saya menambah *routing* di `urls.py` untuk masing-masing fungsi tersebut.
+Untuk menampilkan data dalam bentuk XML dan JSON, saya menambahkan fungsi `show_xml()` dan `show_json()` di `views.py`.
+Untuk hanya menampilkan data objek `Item` dengan `pk` tertentu saya menambahkan fungsi `show_xml_by_id()` dan `show_json_by_id()` ke `views.py`,
+yang akan menggunakan `id` dari URL untuk mengambil data objek yang diinginkan.
+Supaya bisa diakses dengan URL, saya menambah *routing* di `urls.py` untuk masing-masing fungsi tersebut.
 
 ### Postman screenshots 📸
 
@@ -174,13 +241,22 @@ Untuk menampilkan data dalam bentuk XML dan JSON, saya menambahkan fungsi `show_
 
 > *Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step?*
 
-Pertama, saya membuat direktori baru dengan nama project django saya, `hidden-inventory`. Lalu, saya inisiasi project django baru dengan nama `hidden_inventory`. Di dalam direktori tersebut, saya juga membuat python *virtual environment*, berkas `.gitignore`, dan `requirements.txt` untuk mendapatkan package yang dibutuhkan pada saat menggunakan venv. Akhirnya, saya membuka `pwsh` dan menjalankan script `activate.ps1` untuk memulai *virtual environment*.
+Pertama, saya membuat direktori baru dengan nama project django saya, `hidden-inventory`. Lalu, saya inisiasi project django baru dengan nama `hidden_inventory`.
+Di dalam direktori tersebut, saya juga membuat python *virtual environment*, berkas `.gitignore`, dan `requirements.txt` untuk mendapatkan package yang dibutuhkan pada
+saat menggunakan venv. Akhirnya, saya membuka `pwsh` dan menjalankan script `activate.ps1` untuk memulai *virtual environment*.
 
-Sebelum memulai app baru, sama menginisiasi repositori git dengan nama `hidden-inventory`. Setelah itu, saya membuat app `main` dengan command `python manage.py startapp main`, dan kemudian mendaftarkannya di `settings.py` yang berada di direktori proyek. Saya membuat template html dasar untuk aplikasi `main` yang akan menampilkan nama project, nama saya, dan kelas saya.
+Sebelum memulai app baru, sama menginisiasi repositori git dengan nama `hidden-inventory`.
+Setelah itu, saya membuat app `main` dengan command `python manage.py startapp main`, dan kemudian mendaftarkannya di `settings.py` yang berada di direktori proyek.
+Saya membuat template html dasar untuk aplikasi `main` yang akan menampilkan nama project, nama saya, dan kelas saya.
 
-Pada file `models.py` di aplikasi `main`, saya membuat class `Item` dengan atribut `name`, `amount`, `description` serta atribut tambahan `price` dan `tags`. Di dalam file `views.py`, saya membuat function `show_main()` yang akan mengembalikan sebuah template HTML beserta `context` yang berisi nama dan kelas saya, serta nama project. Kemudian saya membuat dan mengaplikasikan migrasi model dengan *command* `makemigrations` dan `migrate`.
+Pada file `models.py` di aplikasi `main`, saya membuat class `Item` dengan atribut `name`, `amount`, `description` serta atribut tambahan `price` dan `tags`.
+Di dalam file `views.py`, saya membuat function `show_main()` yang akan mengembalikan sebuah template HTML beserta `context` yang berisi nama dan kelas saya, serta nama
+project. Kemudian saya membuat dan mengaplikasikan migrasi model dengan *command* `makemigrations` dan `migrate`.
 
-Supaya app `main` bisa diakses dengan browser, saya *routing* di `urls.py` aplikasi `main` pada path kosong supaya browser akan menampilkan fungsi dari `views.py` pada halaman utama website. Kemudian, saya membuat *test-case* yang akan memvalidasi apabila variable dari *context* yang ditampilkan di template sama dengan yang didefinisikan di `views.py`. Terakhir, saya menjalankan `add, commit, push` untuk menyimpan dan *sync* dengan git repo yang ada di [GitHub](https://github.com/mmalkindi/hidden-inventory).
+Supaya app `main` bisa diakses dengan browser, saya *routing* di `urls.py` aplikasi `main` pada path kosong supaya browser akan menampilkan fungsi dari `views.py`
+pada halaman utama website. Kemudian, saya membuat *test-case* yang akan memvalidasi apabila variable dari *context* yang ditampilkan di template sama dengan yang
+didefinisikan di `views.py`.
+Terakhir, saya menjalankan `add, commit, push` untuk menyimpan dan *sync* dengan git repo yang ada di [GitHub](https://github.com/mmalkindi/hidden-inventory).
 
 > *Buatlah bagian yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara `urls.py`, `views.py`, `models.py`, dan berkas `html`*
   
@@ -188,13 +264,18 @@ Supaya app `main` bisa diakses dengan browser, saya *routing* di `urls.py` aplik
 
 >*Jelaskan mengapa kita menggunakan virtual environment? Apakah kita tetap dapat membuat aplikasi web berbasis Django tanpa menggunakan virtual environment?*
 
-Kita menggunakan *virtual environment* supaya perubahan terisolasi dari luar sehingga tidak mengganggu komputer kita. Tiap komputer memiliki spesifikasi/versi *package* dan pythonnya masing-masing, dan tiap project django bisa saja membutuhkan versi *library* dan *package* yang berbeda dari yang sudah di*install* di komputer. Oleh karena itu, dibutuhkan suatu virtual environment supaya perubahan versi *package* tidak mengganggu project django lainnya. Ini juga akan mempermudah *development* dengan orang lain (tugas kelompok) karena mereka hanya perlu menginstall *package* dari suatu *requirement* file dalam `venv`nya masing-masing.
+Kita menggunakan *virtual environment* supaya perubahan terisolasi dari luar sehingga tidak mengganggu komputer kita.
+Tiap komputer memiliki spesifikasi/versi *package* dan pythonnya masing-masing, dan tiap project django bisa saja membutuhkan versi *library* dan *package* yang berbeda dari yang sudah di*install* di komputer.
+Oleh karena itu, dibutuhkan suatu virtual environment supaya perubahan versi *package* tidak mengganggu project django lainnya.
+Ini juga akan mempermudah *development* dengan orang lain (tugas kelompok) karena mereka hanya perlu menginstall *package* dari suatu *requirement* file dalam `venv`nya masing-masing.
 
-Sebenarnya, boleh-boleh saja membuat project Django tanpa menggunakan *virtual environment*, namun memang lebih mudah dan aman apabila menggunakannya. Misal, kita membutuhkan *package* yang sudah kita punya namun versi yang diminta untuk project baru berbeda. Akan lebih mudah apabila kedua project tersebut diisolasi dengan *venv*nya masing-masing selama *development*.
+Sebenarnya, boleh-boleh saja membuat project Django tanpa menggunakan *virtual environment*, namun memang lebih mudah dan aman apabila menggunakannya.
+Misal, kita membutuhkan *package* yang sudah kita punya namun versi yang diminta untuk project baru berbeda. Akan lebih mudah apabila kedua project tersebut diisolasi dengan *venv*nya masing-masing selama *development*.
 
 >*Jelaskan apakah itu MVC, MVT, MVVM dan perbedaan dari ketiganya?*
 
-MVC, MVT, dan MVVM adalah arsitektur/*design pattern* untuk aplikasi berbasis web. Untuk django, kita menggunakan arsitektur MVT (Model View Template). Tiap *pattern* memiliki kelebihan dan *use-case*nya masing-masing, tapi mereka semua bertujuan sama: memisahkan kode dalam proyek supaya lebih mudah untuk di*maintain* (Separation of Concern).
+MVC, MVT, dan MVVM adalah arsitektur/*design pattern* untuk aplikasi berbasis web. Untuk django, kita menggunakan arsitektur MVT (Model View Template).
+Tiap *pattern* memiliki kelebihan dan *use-case*nya masing-masing, tapi mereka semua bertujuan sama: memisahkan kode dalam proyek supaya lebih mudah untuk di*maintain* (Separation of Concern).
 
 ### MVC (Model-View-Controller)
 
