@@ -121,6 +121,21 @@ def edit_item(request, id):
     return render(request, "edit_item.html", context)
 
 @login_required(login_url='/login')
+def edit_item_ajax(request, id):
+    print("cant?")
+    item = Item.objects.get(id=id)
+    if request.method == 'POST' and request.user == item.user:
+        item.name = request.POST.get("name")
+        item.amount = request.POST.get("amount")
+        item.price = request.POST.get("price")
+        item.description = request.POST.get("description")
+        item.tags = request.POST.get("tags")
+        item.save()
+
+        return HttpResponse(b"EDITED", status=201)
+    return HttpResponseNotFound()
+
+@login_required(login_url='/login')
 def increment_item(request, id):
     item = Item.objects.get(id=id)
     item.amount += 1
@@ -149,7 +164,7 @@ def delete_item_ajax(request, id):
     item = Item.objects.get(id=id)
     if request.method == 'POST' and request.user == item.user:
         item.delete()
-        return HttpResponse(b"CREATED", status=201)
+        return HttpResponse(b"DELETED", status=201)
     return HttpResponseNotFound()
 
 # Data related
