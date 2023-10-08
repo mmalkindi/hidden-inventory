@@ -50,6 +50,7 @@
     <!-- MODAL -->
     {% include 'ajax_add_modal.html' %}
     {% include 'ajax_delete_modal.html' %}
+    {% include 'ajax_edit_modal.html' %}
     
     <script>
         async function getItems() {
@@ -78,8 +79,6 @@
                 counter++;
                 const link_add_item = "{% url 'main:increment_item' id=12345 %}".replace(/12345/, item.pk.toString());
                 const link_reduce_item = "{% url 'main:decrement_item' id=12345 %}".replace(/12345/, item.pk.toString());
-                const link_edit_item = "{% url 'main:edit_item' id=12345 %}".replace(/12345/, item.pk.toString());
-                const link_delete_item = "{% url 'main:delete_item' id=12345 %}".replace(/12345/, item.pk.toString());
 
                 htmlString += 
                 `<div class="col">
@@ -115,12 +114,8 @@
                                 <a href="${link_reduce_item}" class="link-btn">
                                     <button type="button" class="btn btn-outline-secondary">-</button>
                                 </a>
-                                <a href="${link_edit_item}" class="link-btn">
-                                    <button type="button" class="btn btn-outline-warning">Edit</button>
-                                </a>
-                                <a href="${link_delete_item}" class="link-btn" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                    <button type="button" class="btn btn-outline-danger delete-item-button">Delete</button>
-                                </a>
+                                <button type="button" class="btn btn-outline-warning edit-item-button" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
+                                <button type="button" class="btn btn-outline-danger delete-item-button" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
                             </div>
                         </div>
                     </div>
@@ -129,11 +124,22 @@
             document.getElementById("item_table").innerHTML = htmlString
             document.getElementById("items_amount").innerText = `Registered items: ${counter}`
 
+            // set event listeners for delete buttons
             var deleteButtons = document.getElementsByClassName("delete-item-button")
             for(var i = 0; i < deleteButtons.length; i++) {
                 (function(index) {
                     deleteButtons[index].addEventListener("click", function() {
                         setDeleteModalId(deleteButtons[index]);
+                    })
+                })(i);
+            }
+
+            // set event listeners for edit buttons
+            var editButtons = document.getElementsByClassName("edit-item-button")
+            for(var i = 0; i < editButtons.length; i++) {
+                (function(index) {
+                    editButtons[index].addEventListener("click", function() {
+                        setEditModalId(editButtons[index]);
                     })
                 })(i);
             }
@@ -164,11 +170,38 @@
         }
         document.getElementById("button_delete").onclick = function() {deleteItem(document.getElementById("deleteModal"))}
 
+        function editItem(modalElement) {
+            const id = modalElement.dataset.itemId
+            const edit_url = "{% url 'main:edit_item_ajax' id=12345 %}".replace(/12345/, id);
+            fetch(edit_url, {
+                method: "POST",
+                body: new FormData(document.querySelector('#edit-item-form'))
+            }).then(refreshItems)
+
+            document.getElementById("edit-item-form").reset();
+            modalElement.dataset.itemId = null;
+            return false
+        }
+        document.getElementById("button_edit").onclick = function() {editItem(document.getElementById("editModal"))}
+
         async function setDeleteModalId(button) {
             const itemDeleteId = button.closest("div.card").dataset.itemId;
             const itemData = (await getItem(itemDeleteId))[0];
             document.getElementById("deleteModal").dataset.itemId = itemDeleteId;
             document.getElementById("deleteConfirmationText").innerHTML = `${itemData.fields.name}`;
+        }
+
+        async function setEditModalId(button) {
+            const itemEditId = button.closest("div.card").dataset.itemId;
+            const itemData = (await getItem(itemEditId))[0];
+            document.getElementById("editModal").dataset.itemId = itemEditId;
+
+            const form = document.querySelector('#edit-item-form')            
+            Array.from(form.elements).forEach((field) => {
+                if (field.name in itemData.fields) {
+                    field.value = itemData.fields[field.name]
+                }
+            });
         }
                 
     </script>
