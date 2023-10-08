@@ -40,7 +40,12 @@
     <div class="mb-4">No items associated with this account!</div>
     {% endif %}
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Add Item</button>
+    <button type="button" class="btn btn-primary ps-2" data-bs-toggle="modal" data-bs-target="#addModal">
+        <span>
+            <svg class="pb-1 me-1" width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Zm0 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17ZM12 7a.75.75 0 0 1 .75.75v3.5h3.5a.75.75 0 0 1 0 1.5h-3.5v3.5a.75.75 0 0 1-1.5 0v-3.5h-3.5a.75.75 0 0 1 0-1.5h3.5v-3.5A.75.75 0 0 1 12 7Z" fill="#fff"/></svg>
+        </span>
+        Add Item
+    </button>
 
     <!-- MODAL -->
     {% include 'ajax_add_modal.html' %}
@@ -54,6 +59,15 @@
         async function getItem(id) {
             const get_url = "{% url 'main:get_an_item' id=12345 %}".replace(/12345/, id.toString());
             return fetch(get_url).then((res) => res.json())
+        }
+
+        function renderTags(tags) {
+            let tagHTML = ``;
+            const tagsArray = tags.split(';');
+            tagsArray.forEach((tag) => {
+                tagHTML += `<span class="badge rounded text-bg-secondary m-1">${tag.trim()}</span>`;
+            })
+            return tagHTML;
         }
         
         async function refreshItems() {
@@ -71,7 +85,8 @@
                 `<div class="col">
                     <div class="card h-100 shadow-sm" data-item-id=${item.pk}>
                         <div class="card-body">
-                            <h5 class="card-title text-center mb-2">${item.fields.name}</h5>
+                            <h5 class="card-title text-center">${item.fields.name}</h5>
+                            <hr/>
                             <p class="card-text mb-3">${item.fields.description}</p>
                             <div class="container text-left">
                                 <div class="row g-2 mb-1">
@@ -84,11 +99,11 @@
                                 </div>
                                 <div class="row g-2 mb-1">
                                     <div class="text-body-secondary col-4 p-0">Tags</div>
-                                    <div class="text-body-tertiary col-8 p-0">${item.fields.tags}</div>
+                                    <div class="col-8 p-0">${renderTags(item.fields.tags)}</div>
                                 </div>
                                 <div class="row g-2 mb-1">
                                     <div class="text-body-secondary col-4 p-0">Date Added</div>
-                                    <div class="text-body-tertiary col-8 p-0">${item.fields.date_added}</div>
+                                    <div class="text-body-tertiary col-8 p-0"><samp>${item.fields.date_added}</samp></div>
                                 </div>
                             </div>
                         </div>
