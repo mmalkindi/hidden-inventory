@@ -1,0 +1,31 @@
+th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.body, footer {
+    padding-top: 1rem;
+    padding-right: 2rem;
+    padding-bottom: 1rem;
+    padding-left: 2rem;
+}
+
+.create-table th {
+    text-align: right;
+    padding: -.2rem;
+}
+.body:has(.login) {
+    padding: 0px;
+    height: 80vh;
+    width: 100vw;
+    display: grid;
+    place-items: center;
+}
+
+.link-btn {
+    text-decoration: none;
+}
+
+.table>*>*>* {
+    background-color: transparent !important;
+}
