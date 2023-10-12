@@ -183,6 +183,7 @@ function deleteItem(modalElement) {
     const delete_url = url_delete_item.replace(/12345/, id);
     fetch(delete_url, {
         method: "POST",
+        body: new FormData(document.querySelector('#delete-item-form'))
     }).then(refreshItems)
 
     modalElement.dataset.itemId = null;
