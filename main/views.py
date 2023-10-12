@@ -121,11 +121,36 @@ def edit_item(request, id):
     return render(request, "edit_item.html", context)
 
 @login_required(login_url='/login')
+def edit_item_ajax(request, id):
+    item = Item.objects.get(id=id)
+    if request.method == 'POST' and request.user == item.user:
+        item.name = request.POST.get("name")
+        item.amount = request.POST.get("amount")
+        item.price = request.POST.get("price")
+        item.description = request.POST.get("description")
+        item.tags = request.POST.get("tags")
+        item.save()
+
+        return HttpResponse(b"EDITED", status=201)
+    return HttpResponseNotFound()
+
+@login_required(login_url='/login')
 def increment_item(request, id):
     item = Item.objects.get(id=id)
     item.amount += 1
     item.save()
     return HttpResponseRedirect(reverse('main:show_main'))
+
+@login_required(login_url='/login')
+@csrf_exempt
+def increment_item_ajax(request, id):
+    item = Item.objects.get(id=id)
+    if request.method == 'POST' and request.user == item.user:
+        item.amount += 1
+        item.save()
+
+        return HttpResponse(b"ADDED", status=201)
+    return HttpResponseNotFound()
 
 @login_required(login_url='/login')
 def decrement_item(request, id):
@@ -136,6 +161,19 @@ def decrement_item(request, id):
     else:
         item.save()
     return HttpResponseRedirect(reverse('main:show_main'))
+
+@login_required(login_url='/login')
+@csrf_exempt
+def decrement_item_ajax(request, id):
+    item = Item.objects.get(id=id)
+    if request.method == 'POST' and request.user == item.user:
+        item.amount -= 1
+        if (item.amount < 0):
+            item.amount = 0
+        item.save()
+
+        return HttpResponse(b"REDUCED", status=201)
+    return HttpResponseNotFound()
 
 @login_required(login_url='/login')
 def delete_item(request, id):
@@ -149,7 +187,7 @@ def delete_item_ajax(request, id):
     item = Item.objects.get(id=id)
     if request.method == 'POST' and request.user == item.user:
         item.delete()
-        return HttpResponse(b"CREATED", status=201)
+        return HttpResponse(b"DELETED", status=201)
     return HttpResponseNotFound()
 
 # Data related

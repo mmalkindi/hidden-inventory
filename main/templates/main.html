@@ -19,142 +19,35 @@
     </p>
     {% if items|length != 0  %}
     <div id="item_table" class="row row-cols-1 row-cols-lg-4 row-cols-md-2 row-cols-sm-1 g-4 mb-4 main-cards" style=".main-cards:last-child { color: red!important; }">        
-        <div class="card" aria-hidden="true">
-            <div class="card-body">
-              <h5 class="card-title placeholder-glow">
-                <span class="placeholder col-6"></span>
-              </h5>
-              <p class="card-text placeholder-glow">
-                <span class="placeholder col-7"></span>
-                <span class="placeholder col-4"></span>
-                <span class="placeholder col-4"></span>
-                <span class="placeholder col-6"></span>
-                <span class="placeholder col-8"></span>
-              </p>
-              <a class="btn btn-primary disabled placeholder col-6" aria-disabled="true"></a>
-            </div>
-          </div>
-          
+        {% include 'placeholder_cards.html' %}
     </div>
     {% else %}
     <div class="mb-4">No items associated with this account!</div>
     {% endif %}
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Add Item</button>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+        <span>
+            <svg class="me-1 p-0" width="18" height="18" fill="none" viewBox="2 2 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Zm0 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17ZM12 7a.75.75 0 0 1 .75.75v3.5h3.5a.75.75 0 0 1 0 1.5h-3.5v3.5a.75.75 0 0 1-1.5 0v-3.5h-3.5a.75.75 0 0 1 0-1.5h3.5v-3.5A.75.75 0 0 1 12 7Z" fill="#fff"/></svg>
+        </span>
+        Add Item
+    </button>
 
     <!-- MODAL -->
     {% include 'ajax_add_modal.html' %}
     {% include 'ajax_delete_modal.html' %}
+    {% include 'ajax_edit_modal.html' %}
     
-    <script>
-        async function getItems() {
-            return fetch("{% url 'main:get_items_json' %}").then((res) => res.json())
-        }
-
-        async function getItem(id) {
-            const get_url = "{% url 'main:get_an_item' id=12345 %}".replace(/12345/, id.toString());
-            return fetch(get_url).then((res) => res.json())
-        }
-        
-        async function refreshItems() {
-            const items = await getItems()
-            let htmlString = ``;
-            var counter = 0;
-            items.forEach((item) => {
-                counter++;
-                const link_add_item = "{% url 'main:increment_item' id=12345 %}".replace(/12345/, item.pk.toString());
-                const link_reduce_item = "{% url 'main:decrement_item' id=12345 %}".replace(/12345/, item.pk.toString());
-                const link_edit_item = "{% url 'main:edit_item' id=12345 %}".replace(/12345/, item.pk.toString());
-                const link_delete_item = "{% url 'main:delete_item' id=12345 %}".replace(/12345/, item.pk.toString());
-
-                htmlString += 
-                `<div class="col">
-                    <div class="card h-100 shadow-sm" data-item-id=${item.pk}>
-                        <div class="card-body">
-                            <h5 class="card-title text-center mb-2">${item.fields.name}</h5>
-                            <p class="card-text mb-3">${item.fields.description}</p>
-                            <div class="container text-left">
-                                <div class="row g-2 mb-1">
-                                    <div class="text-body-secondary col-4 p-0">Price</div>
-                                    <div class="col-8 p-0">\$${item.fields.price}</div>
-                                </div>
-                                <div class="row g-2 mb-1">
-                                    <div class="text-body-secondary col-4 p-0">Amount</div>
-                                    <div class="col-8 p-0">${item.fields.amount}</div>
-                                </div>
-                                <div class="row g-2 mb-1">
-                                    <div class="text-body-secondary col-4 p-0">Tags</div>
-                                    <div class="text-body-tertiary col-8 p-0">${item.fields.tags}</div>
-                                </div>
-                                <div class="row g-2 mb-1">
-                                    <div class="text-body-secondary col-4 p-0">Date Added</div>
-                                    <div class="text-body-tertiary col-8 p-0">${item.fields.date_added}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <div class="gap-2 d-flex justify-content-end">
-                                <a href="${link_add_item}" class="link-btn">
-                                    <button type="button" class="btn btn-outline-secondary">+</button>
-                                </a>
-                                <a href="${link_reduce_item}" class="link-btn">
-                                    <button type="button" class="btn btn-outline-secondary">-</button>
-                                </a>
-                                <a href="${link_edit_item}" class="link-btn">
-                                    <button type="button" class="btn btn-outline-warning">Edit</button>
-                                </a>
-                                <a href="${link_delete_item}" class="link-btn" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                    <button type="button" class="btn btn-outline-danger delete-item-button">Delete</button>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>\n` 
-            })
-            document.getElementById("item_table").innerHTML = htmlString
-            document.getElementById("items_amount").innerText = `Registered items: ${counter}`
-
-            var deleteButtons = document.getElementsByClassName("delete-item-button")
-            for(var i = 0; i < deleteButtons.length; i++) {
-                (function(index) {
-                    deleteButtons[index].addEventListener("click", function() {
-                        setDeleteModalId(deleteButtons[index]);
-                    })
-                })(i);
-            }
-        }
-        refreshItems()
-
-        function addItem() {
-            fetch("{% url 'main:create_item_ajax' %}", {
-                method: "POST",
-                body: new FormData(document.querySelector('#add-item-form'))
-            }).then(refreshItems)
-
-            document.getElementById("add-item-form").reset()
-            return false
-        }
-        document.getElementById("button_add").onclick = addItem
-
-        function deleteItem(modalElement) {
-            const id = modalElement.dataset.itemId
-            const delete_url = "{% url 'main:delete_item_ajax' id=12345 %}".replace(/12345/, id);
-            fetch(delete_url, {
-                method: "POST",
-                body: new FormData(document.querySelector('#delete-item-form'))
-            }).then(refreshItems)
-
-            modalElement.dataset.itemId = null;
-            return false
-        }
-        document.getElementById("button_delete").onclick = function() {deleteItem(document.getElementById("deleteModal"))}
-
-        async function setDeleteModalId(button) {
-            const itemDeleteId = button.closest("div.card").dataset.itemId;
-            const itemData = (await getItem(itemDeleteId))[0];
-            document.getElementById("deleteModal").dataset.itemId = itemDeleteId;
-            document.getElementById("deleteConfirmationText").innerHTML = `${itemData.fields.name}`;
-        }
-                
-    </script>
 {% endblock content %}
+
+{% block scripts %}
+<script>
+    const url_get_items = "{% url 'main:get_items_json' %}";
+    const url_get_an_item = "{% url 'main:get_an_item' id=12345 %}";
+    const url_increment_item = "{% url 'main:increment_item_ajax' id=12345 %}";
+    const url_decrement_item = "{% url 'main:decrement_item_ajax' id=12345 %}";
+    const url_create_item = "{% url 'main:create_item_ajax' %}"
+    const url_delete_item = "{% url 'main:delete_item_ajax' id=12345 %}"
+    const url_edit_item = "{% url 'main:edit_item_ajax' id=12345 %}";
+</script>
+<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+{% endblock scripts %}
