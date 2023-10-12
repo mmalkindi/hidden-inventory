@@ -104,12 +104,8 @@ async function refreshItems() {
                 </div>
                 <div class="card-footer">
                     <div class="gap-2 d-flex justify-content-end">
-                        <a href="${link_add_item}" class="link-btn">
-                            <button type="button" class="btn btn-outline-secondary">+</button>
-                        </a>
-                        <a href="${link_reduce_item}" class="link-btn">
-                            <button type="button" class="btn btn-outline-secondary">-</button>
-                        </a>
+                        <button type="button" class="btn btn-outline-secondary increment-item-button">+</button>
+                        <button type="button" class="btn btn-outline-secondary decrement-item-button">-</button>
                         <button type="button" class="btn btn-outline-warning edit-item-button" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
                         <button type="button" class="btn btn-outline-danger delete-item-button" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
                     </div>
@@ -121,7 +117,7 @@ async function refreshItems() {
     document.getElementById("items_amount").innerText = `Registered items: ${counter}`
 
     // set event listeners for delete buttons
-    var deleteButtons = document.getElementsByClassName("delete-item-button")
+    const deleteButtons = document.getElementsByClassName("delete-item-button")
     for(var i = 0; i < deleteButtons.length; i++) {
         (function(index) {
             deleteButtons[index].addEventListener("click", function() {
@@ -131,12 +127,31 @@ async function refreshItems() {
     }
 
     // set event listeners for edit buttons
-    var editButtons = document.getElementsByClassName("edit-item-button")
+    const editButtons = document.getElementsByClassName("edit-item-button")
     for(var i = 0; i < editButtons.length; i++) {
         (function(index) {
             editButtons[index].addEventListener("click", function() {
                 setEditModalId(editButtons[index]);
-                console.log("halo")
+            })
+        })(i);
+    }
+
+    // set event listeners for increment buttons
+    const incrButtons = document.getElementsByClassName("increment-item-button")
+    for(var i = 0; i < incrButtons.length; i++) {
+        (function(index) {
+            incrButtons[index].addEventListener("click", function() {
+                incrementItem(this.closest("div.card").dataset.itemId);
+            })
+        })(i);
+    }
+
+    // set event listeners for decrement buttons
+    const decrButtons = document.getElementsByClassName("decrement-item-button")
+    for(var i = 0; i < decrButtons.length; i++) {
+        (function(index) {
+            decrButtons[index].addEventListener("click", function() {
+                decrementItem(this.closest("div.card").dataset.itemId);
             })
         })(i);
     }
@@ -168,7 +183,6 @@ function deleteItem(modalElement) {
     const delete_url = url_delete_item.replace(/12345/, id);
     fetch(delete_url, {
         method: "POST",
-        body: new FormData(document.querySelector('#delete-item-form'))
     }).then(refreshItems)
 
     modalElement.dataset.itemId = null;
@@ -190,6 +204,26 @@ function editItem(modalElement) {
     return false
 }
 document.getElementById("button_edit").onclick = function() {editItem(document.getElementById("editModal"))}
+
+// add one quanity to the item
+function incrementItem(id) {
+    const increment_url = url_increment_item.replace(/12345/, id);
+    fetch(increment_url, {
+        method: "POST",
+    }).then((response) => { refreshCard(id) })
+
+    return false
+}
+
+// reduce one quanity from the item
+function decrementItem(id) {
+    const decrement_url = url_decrement_item.replace(/12345/, id);
+    fetch(decrement_url, {
+        method: "POST",
+    }).then((response) => { refreshCard(id) })
+
+    return false
+}
 
 // setting the delete modal id to get item
 async function setDeleteModalId(button) {

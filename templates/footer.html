@@ -1,9 +1,11 @@
-<footer style="position: relative;">
+<footer class="position-relative bottom-0">
     <hr>
-    <div class="small text-start">
-        &copy 2023 Muhammad Milian Alkindi
+    <div class="d-flex justify-content-between">
+        <span class="small">
+            &copy 2023 Muhammad Milian Alkindi
+        </span>
+        {% if last_login != null %}
+            <span class="small text-end">Sesi terakhir login: <samp>{{ last_login }}</samp></span>
+        {% endif %}
     </div>
-    {% if last_login != null %}
-        <div class="small text-end">Sesi terakhir login: <samp>{{ last_login }}</samp></div>
-    {% endif %}
 </footer>

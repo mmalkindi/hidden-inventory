@@ -122,7 +122,6 @@ def edit_item(request, id):
 
 @login_required(login_url='/login')
 def edit_item_ajax(request, id):
-    print("cant?")
     item = Item.objects.get(id=id)
     if request.method == 'POST' and request.user == item.user:
         item.name = request.POST.get("name")
@@ -143,6 +142,17 @@ def increment_item(request, id):
     return HttpResponseRedirect(reverse('main:show_main'))
 
 @login_required(login_url='/login')
+@csrf_exempt
+def increment_item_ajax(request, id):
+    item = Item.objects.get(id=id)
+    if request.method == 'POST' and request.user == item.user:
+        item.amount += 1
+        item.save()
+
+        return HttpResponse(b"ADDED", status=201)
+    return HttpResponseNotFound()
+
+@login_required(login_url='/login')
 def decrement_item(request, id):
     item = Item.objects.get(id=id)
     item.amount -= 1
@@ -151,6 +161,19 @@ def decrement_item(request, id):
     else:
         item.save()
     return HttpResponseRedirect(reverse('main:show_main'))
+
+@login_required(login_url='/login')
+@csrf_exempt
+def decrement_item_ajax(request, id):
+    item = Item.objects.get(id=id)
+    if request.method == 'POST' and request.user == item.user:
+        item.amount -= 1
+        if (item.amount < 0):
+            item.amount = 0
+        item.save()
+
+        return HttpResponse(b"REDUCED", status=201)
+    return HttpResponseNotFound()
 
 @login_required(login_url='/login')
 def delete_item(request, id):
