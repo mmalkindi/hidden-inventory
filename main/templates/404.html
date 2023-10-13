@@ -1,7 +1,13 @@
+{% extends 'base.html' %}
 {% block content %}
 
-<h1>Got lost?</h1>
+<div class="d-flex flex-column justify-content-center text-center d-md-block">
+    <h1 style="font-size: 8rem;">
+        404
+    </h1>
+    <div class="m-3">Oops! That page is either private or doesn't exist</div>
+    <a href="{% url 'main:show_main' %}" class="btn btn-primary bg-gradient" role="button">Back to homepage</a>
 
-<p>The page you're trying to access is either private or no longer exists. <a href="/">Go back to homepage</a></p>
+</div>
 
 {% endblock content %}
