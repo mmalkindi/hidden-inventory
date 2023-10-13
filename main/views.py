@@ -54,7 +54,7 @@ def register(request):
 
 def login_user(request):
     if 'last_login' in request.COOKIES.keys():
-            return redirect('main:login')
+            return redirect('main:show_main')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')

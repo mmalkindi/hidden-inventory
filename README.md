@@ -22,11 +22,11 @@ Kelas : PBP A
 
 > Jelaskan perbedaan antara *asynchronous programming* dengan *synchronous programming*.
 
-Dari namanya, *asynchronous programming* adalah programming dimana operasi diprogram untuk dapat berjalan bersamaan (parallel).
+Dari namanya, *asynchronous programming* adalah programming dimana operasi diprogram untuk dapat berjalan bersamaan (paralel).
 Ketika suatu blok kode dijalankan secara *async*, kode tersebut tidak akan menghentikan kode diluarnya untuk berhenti berjalan.
 
 Berbeda dengan *synchronous programming*, dimana program berjalan secara linear. Bagian kode yang dijalankan secara *synchronous* akan harus
-selesai dahulu (atau mengembalikan suatu nilai untuk fungsi) sebelum bisa lanjut ke baris selanjutnya.
+selesai dahulu (atau *return* suatu nilai apabila fungsi) sebelum bisa lanjut ke baris selanjutnya.
 
 > Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma *event-driven programming*. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini.
 
@@ -37,7 +37,7 @@ akan menjalankan fungsi `addItem`.
 > Jelaskan penerapan *asynchronous programming* pada AJAX.
 
 AJAX adalah penerapan Javascript secara *asynchronous*. Penerapannya ada dalam membuat fungsi yang bekerja secara asinkronus, yaitu dengan
-menambahkan keyword `async` didepan deklarasi fungsi Javascript. Ketika fungsi ini dpanggil, program akan lanjut ke baris selanjutnya bersamaan (paralel)
+menambahkan keyword `async` di depan deklarasi fungsi Javascript. Ketika fungsi ini dipanggil, program akan lanjut ke baris selanjutnya bersamaan (paralel)
 dengan jalannya kode yang ada di fungsi `async` tersebut.
 
 > Pada PBP kali ini, penerapan AJAX dilakukan dengan menggunakan Fetch API daripada *library* jQuery. Bandingkanlah kedua teknologi tersebut dan tuliskan pendapat kamu teknologi manakah yang lebih baik untuk digunakan.
@@ -45,6 +45,7 @@ dengan jalannya kode yang ada di fungsi `async` tersebut.
 Fetch API adalah fitur *built-in* dari Javascript untuk melakukan *request* sehingga bisa digunakan apabila kita memilih untuk tidak menggunakan library jQuery.
 Method `ajax` di jQuery melakukan hal yang sama, namun dalam bentuk yang lebih rapih. Tidak ada salahnya untuk menggunakan satu diantara keduanya, tetapi saya lebih
 memilih untuk menggunakan jQuery karena *overall* kode Javascript lebih mudah untuk dibaca (kecuali sedang menggunakan framework JS lainnya).
+Untuk tugas ini saya belum menggunakan *library* tersebut.
 
 > Jelaskan bagaimana cara kamu mengimplementasikan *checklist* di atas secara *step-by-step* (bukan hanya sekadar mengikuti tutorial).
 
@@ -59,11 +60,11 @@ Kedua fungsi tersebut saya *routing* di `urls.py` supaya bisa diakses oleh Javas
 
 Kembali lagi ke file `main.html`, fungsi `async` `getItems()` akan mengembalikan data yang di*fetch* dari `get_items_json()` supaya bisa digunakan oleh `refreshItems()`.
 Fungsi `refreshItems()` akan menunggu (`await`) hasil *return* dari `getItems()` dan kemudian *looping* tiap data `Item` untuk menambahkan string HTML *card* milik `item`
-tersebut. Setelah selsai *loop*, *string* tersebut akan menjadi `innerHTML`* dari element `#item_table`.
+tersebut. Setelah selsai *loop*, *string* tersebut akan menjadi `innerHTML` dari element `#item_table`.
 
 Selanjutnya, saya menambahkan fungsi `addItem()` yang akan mengirimkan request dengan method `POST` dengan data dari *form* yang ada di modal. Setelah data diproses oleh
 fungsi `create_item_ajax()` di `views.py`, dipanggil fungsi `refreshItems()` supaya tampilan di halaman berubah tanpa perlu *refresh*. *Event* `onclick` dari tombol
-`#button_add` yang ada di modal kemudian disambungkan dengan fungsi `addItem()`. Modal akan secara otomatis ditutup dan data dalam field dihapus (thx Bootstrap).
+`#button_add` yang ada di modal kemudian disambungkan dengan fungsi `addItem()`. Modal akan secara otomatis ditutup dan data dalam field dihapus.
 
 Terakhir, saya menjalankan program `py manage.py collectstatic` dan mengatur file-file yang diperlukan untuk *deployment* web ke PaaS PBP Fasilkom UI.
 
