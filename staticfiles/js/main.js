@@ -25,7 +25,7 @@ function renderTags(tags) {
     let tagHTML = ``;
     const tagsArray = tags.split(';');
     tagsArray.forEach((tag) => {
-        tagHTML += `<span class="badge rounded text-bg-secondary m-1">${tag.trim()}</span>`;
+        tagHTML += `<span class="badge rounded text-primary-emphasis bg-primary-subtle border border-primary-subtle m-1">${tag.trim()}</span>`;
     })
     return tagHTML;
 }
@@ -73,9 +73,6 @@ async function refreshItems() {
     var counter = 0;
     items.forEach((item) => {
         counter++;
-        const link_add_item = url_increment_item.replace(/12345/, item.pk.toString());
-        const link_reduce_item = url_decrement_item.replace(/12345/, item.pk.toString());
-
         htmlString += 
         `<div class="col">
             <div class="card h-100 shadow-sm" data-item-id=${item.pk}>
@@ -104,24 +101,38 @@ async function refreshItems() {
                 </div>
                 <div class="card-footer">
                     <div class="gap-2 d-flex justify-content-end">
-                        <a href="${link_add_item}" class="link-btn">
-                            <button type="button" class="btn btn-outline-secondary">+</button>
-                        </a>
-                        <a href="${link_reduce_item}" class="link-btn">
-                            <button type="button" class="btn btn-outline-secondary">-</button>
-                        </a>
-                        <button type="button" class="btn btn-outline-warning edit-item-button" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
-                        <button type="button" class="btn btn-outline-danger delete-item-button" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-secondary increment-item-button p-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi mb-1" id="theme-icon" viewBox="0 0 16 16">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                </svg>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary decrement-item-button p-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi mb-1" id="theme-icon" viewBox="0 0 16 16">
+                                    <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-outline-warning edit-item-button" data-bs-toggle="modal" data-bs-target="#editModal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi mb-1" id="theme-icon" viewBox="0 0 16 16">
+                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="btn btn-outline-danger delete-item-button" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi mb-1" id="theme-icon" viewBox="0 0 16 16">
+                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>\n` 
     })
     document.getElementById("item_table").innerHTML = htmlString
-    document.getElementById("items_amount").innerText = `Registered items: ${counter}`
+    document.getElementById("items_amount").innerHTML = `Registered items: <strong>${counter.toString()}</strong>`
 
     // set event listeners for delete buttons
-    var deleteButtons = document.getElementsByClassName("delete-item-button")
+    const deleteButtons = document.getElementsByClassName("delete-item-button")
     for(var i = 0; i < deleteButtons.length; i++) {
         (function(index) {
             deleteButtons[index].addEventListener("click", function() {
@@ -131,12 +142,31 @@ async function refreshItems() {
     }
 
     // set event listeners for edit buttons
-    var editButtons = document.getElementsByClassName("edit-item-button")
+    const editButtons = document.getElementsByClassName("edit-item-button")
     for(var i = 0; i < editButtons.length; i++) {
         (function(index) {
             editButtons[index].addEventListener("click", function() {
                 setEditModalId(editButtons[index]);
-                console.log("halo")
+            })
+        })(i);
+    }
+
+    // set event listeners for increment buttons
+    const incrButtons = document.getElementsByClassName("increment-item-button")
+    for(var i = 0; i < incrButtons.length; i++) {
+        (function(index) {
+            incrButtons[index].addEventListener("click", function() {
+                incrementItem(this.closest("div.card").dataset.itemId);
+            })
+        })(i);
+    }
+
+    // set event listeners for decrement buttons
+    const decrButtons = document.getElementsByClassName("decrement-item-button")
+    for(var i = 0; i < decrButtons.length; i++) {
+        (function(index) {
+            decrButtons[index].addEventListener("click", function() {
+                decrementItem(this.closest("div.card").dataset.itemId);
             })
         })(i);
     }
@@ -191,6 +221,26 @@ function editItem(modalElement) {
 }
 document.getElementById("button_edit").onclick = function() {editItem(document.getElementById("editModal"))}
 
+// add one quanity to the item
+function incrementItem(id) {
+    const increment_url = url_increment_item.replace(/12345/, id);
+    fetch(increment_url, {
+        method: "POST",
+    }).then((response) => { refreshCard(id) })
+
+    return false
+}
+
+// reduce one quanity from the item
+function decrementItem(id) {
+    const decrement_url = url_decrement_item.replace(/12345/, id);
+    fetch(decrement_url, {
+        method: "POST",
+    }).then((response) => { refreshCard(id) })
+
+    return false
+}
+
 // setting the delete modal id to get item
 async function setDeleteModalId(button) {
     const itemDeleteId = button.closest("div.card").dataset.itemId;
@@ -211,4 +261,15 @@ async function setEditModalId(button) {
             field.value = itemData.fields[field.name]
         }
     });
+}
+
+// TOASTS
+const toastTrigger = document.getElementById('liveToastBtn')
+const toastLiveExample = document.getElementById('liveToast')
+
+if (toastTrigger) {
+  const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+  toastTrigger.addEventListener('click', () => {
+    toastBootstrap.show()
+  })
 }
