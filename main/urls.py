@@ -15,6 +15,8 @@ urlpatterns = [
     path('reduce-ajax/<int:id>/', decrement_item_ajax, name='decrement_item_ajax'),
     path('delete-ajax/<int:id>/', delete_item_ajax, name='delete_item_ajax'), 
 
+    path('create-flutter/', create_item_flutter, name='create_item_flutter'),
+
     path('create-item/', create_item, name='create_item'),
     path('edit-item/<int:id>', edit_item, name='edit_item'),
     path('add/<int:id>/', increment_item, name='increment_item'),

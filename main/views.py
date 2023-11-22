@@ -1,5 +1,5 @@
 import datetime
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound, JsonResponse
 from django.core import serializers
 from main.forms import ItemForm
 from django.urls import reverse
@@ -10,6 +10,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages  
 from django.contrib.auth.decorators import login_required
+import json
 
 # Create your views here.
 @login_required(login_url='/login')
@@ -189,6 +190,27 @@ def delete_item_ajax(request, id):
         item.delete()
         return HttpResponse(b"DELETED", status=201)
     return HttpResponseNotFound()
+
+@csrf_exempt
+def create_item_flutter(request):
+    if request.method == 'POST':
+        
+        data = json.loads(request.body)
+
+        new_item = Item.objects.create(
+            user = request.user,
+            name = data["name"],
+            amount = int(data["amount"]),
+            price = int(data["price"]),
+            tags = data["tags"],
+            description = data["description"]
+        )
+
+        new_item.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
 
 # Data related
 def show_xml(request):
